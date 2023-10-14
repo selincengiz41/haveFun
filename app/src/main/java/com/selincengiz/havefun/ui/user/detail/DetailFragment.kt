@@ -15,10 +15,6 @@ import com.selincengiz.havefun.databinding.FragmentHomeBinding
 class DetailFragment : Fragment() {
     private lateinit var binding : FragmentDetailBinding
     private val args by navArgs<DetailFragmentArgs>()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

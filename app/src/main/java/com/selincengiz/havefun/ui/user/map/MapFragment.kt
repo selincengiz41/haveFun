@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.selincengiz.havefun.R
+import com.selincengiz.havefun.common.HomeState
 import com.selincengiz.havefun.common.PermissionUtils
 import com.selincengiz.havefun.common.PermissionUtils.checkPermission
 import com.selincengiz.havefun.common.PermissionUtils.shouldShowRationale
@@ -91,13 +92,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         map.isMyLocationEnabled = true
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
 
-        viewModel.events.observe(viewLifecycleOwner) {
-            it.forEach {
-                val selectedLocation = com.google.android.gms.maps.model.LatLng(
-                    it.adress!!.latitude!!,
-                    it.adress!!.longitude!!
-                )
-             map.addMarker(MarkerOptions().position(selectedLocation).title(it.title).snippet(it.id))
+        viewModel.homeState.observe(viewLifecycleOwner) {state->
+
+            when(state){
+                is HomeState.Error->{
+                    Toast.makeText(requireContext(), state.throwable.message, Toast.LENGTH_SHORT).show()
+                }
+                is HomeState.Data->{
+                    state.events.forEach {
+                        val selectedLocation = com.google.android.gms.maps.model.LatLng(
+                            it.adress!!.latitude!!,
+                            it.adress!!.longitude!!
+                        )
+                        map.addMarker(MarkerOptions().position(selectedLocation).title(it.title).snippet(it.id))
+                    }
+                }
+                else->{
+
+                }
             }
 
         }

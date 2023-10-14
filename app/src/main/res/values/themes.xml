@@ -1,0 +1,37 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.HaveFun" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/lightBlue</item>
+      <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorAccent">@color/blue</item>
+        <item name="colorOnPrimary">@color/blue</item>
+        <item name="bottomNavigationStyle">
+            @style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface
+        </item>
+
+
+
+    </style>
+
+    <!-- Search Text Style. -->
+    <style name="SearchTextStyle"  parent="Widget.AppCompat.SearchView">
+        <!-- Custom values write to here for SearchEditText. -->
+
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:enabled">true</item>
+        <item name="android:hint">Search For..</item>
+        <item name="hintEnabled">true</item>
+        <item name="queryHint">Search For</item>
+        <item name="android:imeOptions">actionSearch</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:maxLength">15</item>
+        <item name="android:inputType">textCapSentences</item>
+        <item name="android:textColorHint">#80999999</item>
+        <item name="android:textColor">#000</item>
+        <item name="searchIcon">@drawable/search_icon</item>
+
+    </style>
+    <style name="Theme.HaveFun" parent="Base.Theme.HaveFun" />
+</resources>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "167794213308",
+    "project_id": "havefun-41947",
+    "storage_bucket": "havefun-41947.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167794213308:android:be689b70672e7af552abb9",
+        "android_client_info": {
+          "package_name": "com.selincengiz.havefun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167794213308-msodfm97k0t2oido9cp5c4ri6ev0nkj3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.selincengiz.havefun",
+            "certificate_hash": "58ac3908ae7cd67ad7de940b5c6bcfb31d324e48"
+          }
+        },
+        {
+          "client_id": "167794213308-sqnngk9jehoph7ts8jfpf3cauej6m088.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc9IiIdvIyA4TDigdzFlLMXm7KPzmTsTM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167794213308-sqnngk9jehoph7ts8jfpf3cauej6m088.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

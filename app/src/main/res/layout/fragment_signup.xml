@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.net.Uri"></import>
+
+        <variable
+            name="signUpFunctions"
+            type="com.selincengiz.havefun.ui.user.signup.SignupFragment" />
+
+        <variable
+            name="imageUri"
+            type="Uri" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.user.signup.SignupFragment">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="@dimen/_minus60sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/top_background2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_130sdp"
+            android:layout_marginTop="@dimen/_179sdp"
+            android:background="@drawable/user_background"
+            android:elevation="@dimen/_10sdp"
+            android:onClick="@{() -> signUpFunctions.imageViewClicked()}"
+            android:src="@drawable/user"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginHorizontal="@dimen/_32sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@drawable/edittext_background"
+            android:drawableStart="@drawable/name"
+            android:drawablePadding="@dimen/_16sdp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="text"
+            android:textColorHint="@color/textColorHint"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile" />
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginHorizontal="@dimen/_32sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@drawable/edittext_background"
+            android:drawableStart="@drawable/email"
+            android:drawablePadding="@dimen/_16sdp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="text"
+            android:textColorHint="@color/textColorHint"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_name" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginHorizontal="@dimen/_32sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@drawable/edittext_background"
+            android:drawableStart="@drawable/password"
+            android:drawablePadding="@dimen/_16sdp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColorHint="@color/textColorHint"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_email" />
+
+
+        <TextView
+            android:id="@+id/tv_login"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> signUpFunctions.toLoginClicked()}"
+            android:text="Already have an account? Login"
+            android:textColor="@color/textColorHint"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/et_password"
+            app:layout_constraintStart_toStartOf="@+id/et_password"
+            app:layout_constraintTop_toBottomOf="@+id/iv_register" />
+
+        <com.selincengiz.havefun.viewAssets.AnimationImageView
+            android:id="@+id/iv_register"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_margin="@dimen/_16sdp"
+            android:onClick="@{() -> signUpFunctions.signUpClicked(etEmail.getText().toString(),etPassword.getText().toString(),etName.getText().toString(),imageUri)}"
+            android:src="@drawable/btn_arraw1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_password" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

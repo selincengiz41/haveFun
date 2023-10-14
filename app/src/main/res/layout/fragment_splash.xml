@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="splashFragmentFunctions"
+            type="com.selincengiz.havefun.ui.splash.SplashFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        tools:context=".ui.splash.SplashFragment">
+
+        <com.tistory.zladnrms.roundablelayout.RoundableLayout
+            android:id="@+id/roundableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/_110sdp"
+            android:backgroundTint="@color/blue"
+            android:elevation="@dimen/_10sdp"
+            app:cornerLeftBottom="@dimen/_32sdp"
+            app:cornerRightBottom="@dimen/_32sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_20sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/animationView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/fireworks">
+
+            </com.airbnb.lottie.LottieAnimationView>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationView"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginTop="@dimen/_minus40sdp"
+                android:rotationY="-17"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/animationView3"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/animation">
+
+            </com.airbnb.lottie.LottieAnimationView>
+
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationView3"
+                android:layout_width="@dimen/_125sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:rotationY="-17"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_60sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/animationView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/animation">
+
+            </com.airbnb.lottie.LottieAnimationView>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationView2"
+                android:layout_width="@dimen/_140sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_90sdp"
+                android:rotationY="-17"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/animationView"
+                app:layout_constraintTop_toTopOf="@+id/animationView3"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/animation">
+
+            </com.airbnb.lottie.LottieAnimationView>
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:fontFamily="@font/titlefont"
+                android:text="Have Fun"
+                android:textColor="@color/lightBlue"
+                android:textSize="@dimen/_50ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+
+
+        <com.selincengiz.havefun.viewAssets.AnimationAppCompatButton
+            android:id="@+id/loginBtn"
+            style="@android:style/Widget.Button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_55sdp"
+            android:background="@drawable/btn_background"
+            android:text="Go to Login Page"
+            android:textColor="@color/textColorHint"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold"
+            android:onClick="@{() -> splashFragmentFunctions.loginClicked()}"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/createEventBtn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/roundableLayout"></com.selincengiz.havefun.viewAssets.AnimationAppCompatButton>
+
+        <com.selincengiz.havefun.viewAssets.AnimationAppCompatButton
+            android:id="@+id/createEventBtn"
+            style="@android:style/Widget.Button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_55sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:background="@drawable/btn_background"
+            android:text="Create an Event"
+            android:textColor="@color/textColorHint"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold"
+            android:onClick="@{() -> splashFragmentFunctions.createEventClicked()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/loginBtn"
+            app:layout_constraintTop_toBottomOf="@+id/roundableLayout"></com.selincengiz.havefun.viewAssets.AnimationAppCompatButton>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

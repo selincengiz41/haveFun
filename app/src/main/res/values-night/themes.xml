@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.HaveFun" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorAccent">@color/blue</item>
+        <item name="colorPrimarySurface">@color/blue</item>
+        <item name="bottomNavigationStyle">
+            @style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface
+        </item>
+
+
+
+
+    </style>
+
+</resources>

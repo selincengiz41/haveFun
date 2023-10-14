@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+   >
+
+    <data>
+
+    </data>
+
+    <com.tistory.zladnrms.roundablelayout.RoundableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cornerRightBottom="@dimen/_10sdp"
+       app:cornerLeftBottom="@dimen/_10sdp"
+        app:cornerRightTop="@dimen/_10sdp"
+        app:cornerLeftTop="@dimen/_10sdp"
+        android:elevation="@dimen/_10sdp">
+
+        <EditText
+            android:id="@+id/et_custom"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginVertical="@dimen/_20sdp"
+            android:ems="10"
+            android:hint="Enter your custom type."
+            android:inputType="text"
+            android:textColorHint="@color/textColorHint"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.selincengiz.havefun.viewAssets.AnimationImageView
+            android:id="@+id/iv_go"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_margin="@dimen/_16sdp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/btn_arraw1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_custom" />
+
+    </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+</layout>

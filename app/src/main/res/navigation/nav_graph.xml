@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.selincengiz.havefun.ui.user.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/loginToHome"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/loginToSignUp"
+            app:destination="@id/signupFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.selincengiz.havefun.ui.user.signup.SignupFragment"
+        android:label="SignupFragment" >
+        <action
+            android:id="@+id/signupToLogin"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/signupToHome"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.selincengiz.havefun.ui.user.discover.DiscoverFragment"
+        android:label="DiscoverFragment" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.selincengiz.havefun.ui.user.map.MapFragment"
+        android:label="MapFragment" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.selincengiz.havefun.ui.user.home.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.selincengiz.havefun.ui.splash.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/splashToLogin"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/splashToHome"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/splashToEvent"
+            app:destination="@id/createEventFragment" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_splashFragment"
+        app:destination="@id/splashFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/createEventFragment"
+        android:name="com.selincengiz.havefun.ui.event.CreateEventFragment"
+        android:label="CreateEventFragment" />
+</navigation>

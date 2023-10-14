@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="createEventFunctions"
+            type="com.selincengiz.havefun.ui.event.CreateEventFragment" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.event.CreateEventFragment">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@+id/button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/background">
+
+            </com.airbnb.lottie.LottieAnimationView>
+
+
+            <com.tistory.zladnrms.roundablelayout.RoundableLayout
+                android:id="@+id/title_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_minus20sdp"
+                android:alpha="0.8"
+                android:elevation="@dimen/_10sdp"
+                app:cornerAll="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView5"
+                tools:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:text="Title"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_20ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                <EditText
+                    android:id="@+id/et_title"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:drawableStart="@drawable/baseline_title_24"
+                    android:drawablePadding="@dimen/_16sdp"
+                    android:drawableTint="@color/textColorHint"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:textColorHint="@color/textColorHint"
+                    android:textSize="@dimen/_18ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+
+            </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+
+            <com.tistory.zladnrms.roundablelayout.RoundableLayout
+                android:id="@+id/date_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:alpha="0.8"
+                android:elevation="@dimen/_10sdp"
+                app:cornerAll="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_layout"
+                tools:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:text="Date"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_20ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                <EditText
+                    android:id="@+id/et_date"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:drawableStart="@drawable/baseline_date_range_24"
+                    android:drawablePadding="@dimen/_16sdp"
+                    android:drawableTint="@color/textColorHint"
+                    android:editable="false"
+                    android:ems="10"
+                    android:inputType="none"
+                    android:onClick="@{() -> createEventFunctions.dateClicked()}"
+                    android:textColorHint="@color/textColorHint"
+                    android:textSize="@dimen/_18ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_date" />
+
+
+            </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+
+
+            <com.tistory.zladnrms.roundablelayout.RoundableLayout
+                android:id="@+id/type_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:alpha="0.8"
+                android:elevation="@dimen/_10sdp"
+                app:cornerAll="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_layout"
+                tools:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:text="Type"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_20ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/spinner"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:textColorHint="@color/textColorHint"
+                    android:textSize="@dimen/_18ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_type">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/act"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/baseline_widgets_24"
+                        android:drawablePadding="@dimen/_16sdp"
+                        android:drawableTint="@color/textColorHint"
+                        android:hint="Select Type"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+
+            <com.tistory.zladnrms.roundablelayout.RoundableLayout
+                android:id="@+id/person_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:alpha="0.8"
+                android:elevation="@dimen/_10sdp"
+                app:cornerAll="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/type_layout"
+                tools:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:text="Person Limit"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_20ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                <EditText
+                    android:id="@+id/et_person"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:drawableStart="@drawable/baseline_person_outline_24"
+                    android:drawablePadding="@dimen/_16sdp"
+                    android:drawableTint="@color/textColorHint"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:textColorHint="@color/textColorHint"
+                    android:textSize="@dimen/_18ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_person" />
+
+
+            </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+
+            <com.tistory.zladnrms.roundablelayout.RoundableLayout
+                android:id="@+id/location_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:alpha="0.8"
+                android:elevation="@dimen/_10sdp"
+                app:cornerAll="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/person_layout"
+                tools:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:text="Location"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_20ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                <EditText
+                    android:id="@+id/et_location_title"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:ems="10"
+                    android:hint="Location Title"
+                    android:inputType="text"
+                    android:textColorHint="@color/textColorHint"
+                    android:textSize="@dimen/_18ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_location" />
+
+                <TextView
+                    android:id="@+id/tv_location_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:text="Adress"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@+id/et_location_title"
+                    app:layout_constraintTop_toBottomOf="@+id/et_location_title"></TextView>
+
+                <com.tistory.zladnrms.roundablelayout.RoundableLayout
+                    android:id="@+id/roundableLayout2"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:elevation="@dimen/_10sdp"
+                    android:foreground="@drawable/map"
+                    android:onClick="@{() -> createEventFunctions.mapClicked()}"
+                    app:cornerAll="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_location_info">
+
+
+                </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/maps"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    name="com.google.android.gms.maps.SupportMapFragment"
+                    class="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="@dimen/_5sdp"
+                    android:layout_height="@dimen/_5sdp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+
+
+            <com.tistory.zladnrms.roundablelayout.RoundableLayout
+                android:id="@+id/communication_info_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:alpha="0.8"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:elevation="@dimen/_10sdp"
+                app:cornerAll="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/location_layout">
+
+                <TextView
+                    android:id="@+id/tv_communication_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:text="Communication Info"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_20ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:drawableStart="@drawable/baseline_phone_24"
+                    android:drawablePadding="@dimen/_16sdp"
+                    android:drawableTint="@color/textColorHint"
+                    android:ems="10"
+                    android:inputType="phone"
+                    android:textColorHint="@color/textColorHint"
+                    android:textSize="@dimen/_18ssp"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_communication_info" />
+
+
+                <EditText
+                    android:id="@+id/et_mail"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:drawableStart="@drawable/baseline_email_24"
+                    android:drawablePadding="@dimen/_16sdp"
+                    android:drawableTint="@color/textColorHint"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:textColorHint="@color/textColorHint"
+                    android:textSize="@dimen/_18ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_phone" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tooltipText="This field is not required."
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_communication_info"
+                    app:layout_constraintStart_toEndOf="@+id/tv_communication_info"
+                    app:layout_constraintTop_toTopOf="@+id/tv_communication_info"
+                    app:srcCompat="@drawable/baseline_info_24" />
+
+            </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+
+            <com.tistory.zladnrms.roundablelayout.RoundableLayout
+                android:id="@+id/price_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:alpha="0.8"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:elevation="@dimen/_10sdp"
+                app:cornerAll="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/communication_info_layout">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tooltipText="This field is not required."
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_price"
+                    app:layout_constraintStart_toEndOf="@+id/tv_price"
+                    app:layout_constraintTop_toTopOf="@+id/tv_price"
+                    app:srcCompat="@drawable/baseline_info_24" />
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:text="Price"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_20ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                <EditText
+                    android:id="@+id/et_price"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:drawableStart="@drawable/baseline_attach_money_24"
+                    android:drawablePadding="@dimen/_16sdp"
+                    android:drawableTint="@color/textColorHint"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:textColorHint="@color/textColorHint"
+                    android:textSize="@dimen/_18ssp"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_price" />
+
+
+            </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginStart="@dimen/_minus25sdp"
+                android:layout_marginTop="@dimen/_minus35sdp"
+                android:rotation="180"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/arrow" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:rotation="-17"
+                app:layout_constraintStart_toStartOf="@+id/imageView5"
+                app:layout_constraintTop_toTopOf="@+id/imageView5"
+                app:srcCompat="@drawable/pic" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_minus15sdp"
+                android:text="New Event"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_30ssp"
+                android:textStyle="bold|italic"
+                app:layout_constraintBottom_toTopOf="@+id/title_layout"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_50sdp"
+                android:layout_marginEnd="@dimen/_50sdp"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:backgroundTint="@color/blue"
+                android:text="Save Event"
+                android:onClick="@{()-> createEventFunctions.saveClicked()}"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/price_layout"
+                app:layout_constraintStart_toStartOf="@+id/price_layout"
+                app:layout_constraintTop_toBottomOf="@+id/price_layout" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</layout>

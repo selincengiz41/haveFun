@@ -49,7 +49,11 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.selincengiz.havefun.ui.user.map.MapFragment"
-        android:label="MapFragment" />
+        android:label="MapFragment" >
+        <action
+            android:id="@+id/mapToDetail"
+            app:destination="@id/detailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.selincengiz.havefun.ui.user.home.HomeFragment"
@@ -88,4 +92,13 @@
         android:id="@+id/createEventFragment"
         android:name="com.selincengiz.havefun.ui.event.CreateEventFragment"
         android:label="CreateEventFragment" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.selincengiz.havefun.ui.user.detail.DetailFragment"
+        android:label="DetailFragment" >
+        <argument
+            android:name="id"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

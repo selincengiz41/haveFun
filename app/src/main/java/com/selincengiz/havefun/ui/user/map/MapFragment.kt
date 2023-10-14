@@ -29,6 +29,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.selincengiz.havefun.R
@@ -37,6 +38,7 @@ import com.selincengiz.havefun.common.PermissionUtils.checkPermission
 import com.selincengiz.havefun.common.PermissionUtils.shouldShowRationale
 import com.selincengiz.havefun.databinding.FragmentMapBinding
 import com.selincengiz.havefun.ui.MainActivity
+import com.selincengiz.havefun.ui.user.home.HomeFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -85,7 +87,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(map: GoogleMap) {
-
+        val markerList = ArrayList<Marker>()
         map.isMyLocationEnabled = true
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
 
@@ -95,11 +97,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     it.adress!!.latitude!!,
                     it.adress!!.longitude!!
                 )
-                map.addMarker(MarkerOptions().position(selectedLocation).title(it.title))
-
+             map.addMarker(MarkerOptions().position(selectedLocation).title(it.title).snippet(it.id))
             }
 
         }
+
+
+        map.setOnInfoWindowLongClickListener {
+            findNavController().navigate(MapFragmentDirections.mapToDetail(it.snippet))
+        }
+
     }
 
     fun getLocation() {

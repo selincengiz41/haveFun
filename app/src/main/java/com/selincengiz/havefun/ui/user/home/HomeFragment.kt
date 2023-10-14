@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.selincengiz.havefun.R
 import com.selincengiz.havefun.common.Extensions.loadUrl
+import com.selincengiz.havefun.common.HomeState
 import com.selincengiz.havefun.databinding.FragmentHomeBinding
 import com.selincengiz.havefun.ui.adapter.CategoryAdapter
 import com.selincengiz.havefun.ui.adapter.ItemCategoryListener
@@ -47,13 +49,38 @@ class HomeFragment : Fragment(), ItemCategoryListener {
            profile.loadUrl(auth.currentUser?.photoUrl)
            name = auth.currentUser?.displayName
         }
-
-        observe()
         viewModel.fireBaseCategoryLiveRead()
+        observe()
+
     }
     fun observe(){
-        viewModel.categories.observe(viewLifecycleOwner){
-            categoryAdapter.submitList(it)
+        viewModel.homeState.observe(viewLifecycleOwner){state ->
+
+            when(state){
+
+                is HomeState.Loading->{
+                    binding.progressBar.visibility=View.VISIBLE
+                    binding.mainLayout.visibility=View.GONE
+                    binding.foodByCategoryLayout.visibility=View.GONE
+                }
+                is HomeState.Category->{
+                    binding.progressBar.visibility=View.GONE
+                    binding.mainLayout.visibility=View.VISIBLE
+                    binding.foodByCategoryLayout.visibility=View.GONE
+                    categoryAdapter.submitList(state.categories)
+                }
+                is HomeState.Error->{
+                    binding.progressBar.visibility=View.GONE
+                    binding.mainLayout.visibility=View.GONE
+                    binding.foodByCategoryLayout.visibility=View.GONE
+                    Toast.makeText(requireContext(), state.throwable.message, Toast.LENGTH_SHORT).show()
+                }
+
+                else->{
+
+                }
+            }
+
         }
     }
     fun backClicked(){

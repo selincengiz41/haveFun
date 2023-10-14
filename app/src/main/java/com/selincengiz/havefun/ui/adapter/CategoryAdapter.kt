@@ -44,7 +44,7 @@ class CategoryAdapter(private val itemListener: ItemCategoryListener) :
 
     class CategoryDiffCallBack() : DiffUtil.ItemCallback<Category>() {
         override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {

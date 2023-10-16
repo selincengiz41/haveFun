@@ -107,8 +107,8 @@
             android:padding="@dimen/_5sdp"
             android:queryBackground="@null"
             android:queryHint=" Find Your Event"
-            android:searchHintIcon="@drawable/search_icon"
-            android:searchIcon="@drawable/search_icon"
+            android:searchHintIcon="@drawable/baseline_search_24"
+            android:searchIcon="@drawable/baseline_search_24"
             android:textSize="@dimen/_14ssp"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
@@ -166,14 +166,16 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/popular_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5"
-                tools:itemCount="5" />
+                tools:itemCount="4"
+                tools:listitem="@layout/item_event" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

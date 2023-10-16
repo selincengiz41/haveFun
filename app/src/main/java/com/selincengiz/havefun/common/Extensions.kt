@@ -6,8 +6,18 @@ import android.net.Uri
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.model.Marker
 import com.selincengiz.havefun.R
 import java.util.Calendar
+import android.content.Context
+import android.graphics.Bitmap
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.MarkerOptions
+
 
 object Extensions {
     fun ImageView.loadUrl(url: Uri?) {
@@ -51,4 +61,6 @@ object Extensions {
             true
         ).show()
     }
+
+
 }

@@ -1,26 +1,24 @@
 package com.selincengiz.havefun.ui.user.map
 
 import android.annotation.SuppressLint
-import android.app.Activity
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.adevinta.leku.LocationPicker
-import com.adevinta.leku.LocationPickerActivity
-import com.adevinta.leku.locale.SearchZoneRect
-import com.adevinta.leku.tracker.LocationPickerTracker
-import com.adevinta.leku.tracker.TrackEvents
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -33,14 +31,15 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.selincengiz.havefun.R
+
 import com.selincengiz.havefun.common.HomeState
 import com.selincengiz.havefun.common.PermissionUtils
 import com.selincengiz.havefun.common.PermissionUtils.checkPermission
 import com.selincengiz.havefun.common.PermissionUtils.shouldShowRationale
 import com.selincengiz.havefun.databinding.FragmentMapBinding
-import com.selincengiz.havefun.ui.MainActivity
-import com.selincengiz.havefun.ui.user.home.HomeFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
+import java.net.URL
+
 
 @AndroidEntryPoint
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -101,16 +100,56 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 is HomeState.Data -> {
-                    state.events.forEach {
+                    state.events.forEach {event ->
+
 
                         val selectedLocation = com.google.android.gms.maps.model.LatLng(
-                            it.adress!!.location!!.latitude!!,
-                            it.adress!!.location!!.longitude!!
+                            event.adress!!.location!!.latitude!!,
+                            event.adress!!.location!!.longitude!!
                         )
-                        map.addMarker(
-                            MarkerOptions().position(selectedLocation).title(it.title)
-                                .snippet(it.id)
-                        )
+
+
+                        viewModel.categoryFirebase(event.type, success =
+                        {bmp->
+                            try {
+                                bmp?.let {
+
+                                    Glide.with(this)
+                                        .asBitmap()
+                                        .load(it)
+                                        .into(object : CustomTarget<Bitmap>(100,100){
+                                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                                val marker=MarkerOptions().position(selectedLocation).title(event.title)
+                                                    .snippet(event.id).icon(BitmapDescriptorFactory.fromBitmap(resource))
+
+                                                map.addMarker(
+                                                    marker
+                                                )
+                                            }
+                                            override fun onLoadCleared(placeholder: Drawable?) {
+                                                // this is called when imageView is cleared on lifecycle call or for
+                                                // some other reason.
+                                                // if you are referencing the bitmap somewhere else too other than this imageView
+                                                // clear it here as you can no longer have the bitmap
+                                            }
+                                        })
+
+                                }
+
+
+                            }catch (e:Exception){
+                                Log.i("probblme",e.message.orEmpty())
+                            }
+
+                        }, fail = {
+                            val marker=MarkerOptions().position(selectedLocation).title(event.title)
+                                .snippet(event.id)
+
+                            map.addMarker(
+                                marker
+                            )
+                        })
+
 
 
                     }

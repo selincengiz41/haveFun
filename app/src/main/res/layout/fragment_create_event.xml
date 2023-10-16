@@ -392,17 +392,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_phone" />
 
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tooltipText="This field is not required."
-                    android:layout_marginStart="@dimen/_10sdp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_communication_info"
-                    app:layout_constraintStart_toEndOf="@+id/tv_communication_info"
-                    app:layout_constraintTop_toTopOf="@+id/tv_communication_info"
-                    app:srcCompat="@drawable/baseline_info_24" />
-
             </com.tistory.zladnrms.roundablelayout.RoundableLayout>
 
             <com.tistory.zladnrms.roundablelayout.RoundableLayout

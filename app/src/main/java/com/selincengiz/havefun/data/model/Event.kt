@@ -4,7 +4,7 @@ import android.location.Address
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
+
 data class Event
  (val id :String?,
   val title:String?,
@@ -17,5 +17,5 @@ data class Event
   val price:Double?
 
 
-     ):Parcelable
+     )
 

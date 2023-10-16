@@ -35,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.GeoPoint
 import com.selincengiz.havefun.R
 import com.selincengiz.havefun.common.Extensions.showDatePicker
 import com.selincengiz.havefun.common.Extensions.showTimePicker
@@ -68,12 +69,13 @@ class CreateEventFragment : Fragment(), OnMapReadyCallback {
                 val postalcode = result.data?.getStringExtra(ZIPCODE)
                 val bundle = result.data?.getBundleExtra(TRANSITION_BUNDLE)
                 val fullAddress = result.data?.getParcelableExtra<Address>(ADDRESS)
+
                 if (fullAddress != null) {
                     Log.d("FULL ADDRESS****", fullAddress.toString())
+                    val geoPoint = GeoPoint(latitude!!, longitude!!)
                     locationAdress = com.selincengiz.havefun.data.model.Address(
                         fullAddress.countryName,
-                        latitude,
-                        longitude,
+                        geoPoint,
                         address
                     )
 
@@ -218,7 +220,7 @@ class CreateEventFragment : Fragment(), OnMapReadyCallback {
 
         if (title.isNullOrEmpty().not() && date.isNullOrEmpty().not() && type.isNullOrEmpty()
                 .not() && personLimit.isNullOrEmpty().not() && locationTitle.isNullOrEmpty()
-                .not() && locationAdress != null
+                .not() && locationAdress != null && communicationMail.isNullOrEmpty().not() && communicationPhone.isNullOrEmpty().not()
         ) {
             val info = CommunicationInfo(communicationPhone, communicationMail)
             val event = Event(

@@ -82,7 +82,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requestPermission()
-        viewModel.fireBaseLiveRead()
+
 
     }
 
@@ -92,22 +92,31 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         map.isMyLocationEnabled = true
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
 
-        viewModel.homeState.observe(viewLifecycleOwner) {state->
+        viewModel.homeState.observe(viewLifecycleOwner) { state ->
 
-            when(state){
-                is HomeState.Error->{
-                    Toast.makeText(requireContext(), state.throwable.message, Toast.LENGTH_SHORT).show()
+            when (state) {
+                is HomeState.Error -> {
+                    Toast.makeText(requireContext(), state.throwable.message, Toast.LENGTH_SHORT)
+                        .show()
                 }
-                is HomeState.Data->{
+
+                is HomeState.Data -> {
                     state.events.forEach {
+
                         val selectedLocation = com.google.android.gms.maps.model.LatLng(
-                            it.adress!!.latitude!!,
-                            it.adress!!.longitude!!
+                            it.adress!!.location!!.latitude!!,
+                            it.adress!!.location!!.longitude!!
                         )
-                        map.addMarker(MarkerOptions().position(selectedLocation).title(it.title).snippet(it.id))
+                        map.addMarker(
+                            MarkerOptions().position(selectedLocation).title(it.title)
+                                .snippet(it.id)
+                        )
+
+
                     }
                 }
-                else->{
+
+                else -> {
 
                 }
             }
@@ -124,6 +133,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     fun getLocation() {
         locationTask.addOnSuccessListener {
             location = LatLng(it.latitude, it.longitude)
+            viewModel.fireBaseLiveRead(location)
             binding.maps.getFragment<SupportMapFragment>().getMapAsync(this@MapFragment)
         }
     }

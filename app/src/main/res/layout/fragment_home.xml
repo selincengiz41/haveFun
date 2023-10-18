@@ -122,7 +122,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/background">
+            app:layout_constraintTop_toBottomOf="@+id/background"
+            tools:visibility="gone">
 
             <TextView
                 android:id="@+id/textView4"
@@ -187,22 +188,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/background"
-            tools:visibility="gone"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/background">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/foodsByFilterRecycler"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:spanCount="2"
-                tools:itemCount="5" />
+                tools:itemCount="4"
+                tools:listitem="@layout/item_event"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

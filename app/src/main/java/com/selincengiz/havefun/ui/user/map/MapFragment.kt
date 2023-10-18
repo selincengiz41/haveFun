@@ -148,6 +148,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                             map.addMarker(
                                 marker
                             )
+                        } , error = {
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                         })
 
 

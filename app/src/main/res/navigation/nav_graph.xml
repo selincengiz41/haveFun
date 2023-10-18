@@ -57,7 +57,11 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.selincengiz.havefun.ui.user.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/homeToDetail"
+            app:destination="@id/detailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.selincengiz.havefun.ui.splash.SplashFragment"

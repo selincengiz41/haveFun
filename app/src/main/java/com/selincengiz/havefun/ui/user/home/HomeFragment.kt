@@ -33,6 +33,7 @@ import com.selincengiz.havefun.ui.adapter.EventAdapter
 import com.selincengiz.havefun.ui.adapter.ItemCategoryListener
 import com.selincengiz.havefun.ui.adapter.ItemEventListener
 import com.selincengiz.havefun.ui.user.login.LoginViewModel
+import com.selincengiz.havefun.ui.user.map.MapFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -46,6 +47,7 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener {
     private val viewModel by viewModels<HomeViewModel>()
     private val categoryAdapter by lazy { CategoryAdapter(this) }
     private val eventAdapter by lazy { EventAdapter(this,db) }
+    private val eventFilteredAdapter by lazy { EventAdapter(this,db) }
     private lateinit var flpc: FusedLocationProviderClient
     private lateinit var locationTask: Task<Location>
     private lateinit var location: com.google.android.gms.maps.model.LatLng
@@ -76,6 +78,7 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener {
         binding.profileLayout.background=null
         binding.categoriesRecycler.adapter=categoryAdapter
         binding.popularRecycler.adapter=eventAdapter
+        binding.foodsByFilterRecycler.adapter=eventFilteredAdapter
         return binding.root
     }
 
@@ -155,6 +158,12 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener {
                     eventAdapter.submitList(state.events)
 
                 }
+                is HomeState.DataByFilter->{
+                    binding.progressBar.visibility=View.GONE
+                    binding.mainLayout.visibility=View.GONE
+                    binding.foodByCategoryLayout.visibility=View.VISIBLE
+                    eventFilteredAdapter.submitList(state.events)
+                }
 
                 else->{
 
@@ -174,10 +183,11 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener {
 
     override fun onClicked(category: String) {
 
+        viewModel.fireBaseCategoryEventLiveRead(location,category)
     }
 
     override fun onClickedEvent(event: String) {
-
+        findNavController().navigate(HomeFragmentDirections.homeToDetail(event))
     }
 
 

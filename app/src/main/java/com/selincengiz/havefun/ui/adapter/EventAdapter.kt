@@ -58,7 +58,7 @@ class EventAdapter (private val itemListener: ItemEventListener , private val db
             }
 
             root.setOnClickListener {
-                listener.onClickedEvent(event.title!!)
+                listener.onClickedEvent(event.id!!)
             }
         }
 

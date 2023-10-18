@@ -38,16 +38,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener {
+class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
+    android.widget.SearchView.OnQueryTextListener {
     @Inject
     lateinit var auth: FirebaseAuth
+
     @Inject
     lateinit var db: FirebaseFirestore
-    private lateinit var binding : FragmentHomeBinding
+    private lateinit var binding: FragmentHomeBinding
     private val viewModel by viewModels<HomeViewModel>()
     private val categoryAdapter by lazy { CategoryAdapter(this) }
-    private val eventAdapter by lazy { EventAdapter(this,db) }
-    private val eventFilteredAdapter by lazy { EventAdapter(this,db) }
+    private val eventAdapter by lazy { EventAdapter(this, db) }
+    private val eventFilteredAdapter by lazy { EventAdapter(this, db) }
     private lateinit var flpc: FusedLocationProviderClient
     private lateinit var locationTask: Task<Location>
     private lateinit var location: com.google.android.gms.maps.model.LatLng
@@ -67,39 +69,44 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener {
                 findNavController().navigateUp()
             }
         }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         flpc = LocationServices.getFusedLocationProviderClient(requireActivity())
-        binding.homeFunctions=this
-        binding.profileLayout.background=null
-        binding.categoriesRecycler.adapter=categoryAdapter
-        binding.popularRecycler.adapter=eventAdapter
-        binding.foodsByFilterRecycler.adapter=eventFilteredAdapter
+        binding.homeFunctions = this
+        binding.profileLayout.background = null
+        binding.categoriesRecycler.adapter = categoryAdapter
+        binding.popularRecycler.adapter = eventAdapter
+        binding.foodsByFilterRecycler.adapter = eventFilteredAdapter
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requestPermission()
-        with(binding){
-           profile.loadUrl(auth.currentUser?.photoUrl)
-           name = auth.currentUser?.displayName
+        binding.searchView.setOnQueryTextListener(this)
+        with(binding) {
+            profile.loadUrl(auth.currentUser?.photoUrl)
+            name = auth.currentUser?.displayName
+
         }
         viewModel.fireBaseCategoryLiveRead()
 
         observe()
 
     }
+
     fun getLocation() {
         locationTask.addOnSuccessListener {
             location = LatLng(it.latitude, it.longitude)
             viewModel.fireBaseLiveRead(location)
         }
     }
+
     fun requestPermission() {
         requireContext().checkPermission(
             PermissionUtils.locationFinePermission,
@@ -128,51 +135,57 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener {
         )
 
     }
-    fun observe(){
-        viewModel.homeState.observe(viewLifecycleOwner){state ->
 
-            when(state){
+    fun observe() {
+        viewModel.homeState.observe(viewLifecycleOwner) { state ->
 
-                is HomeState.Loading->{
-                    binding.progressBar.visibility=View.VISIBLE
-                    binding.mainLayout.visibility=View.GONE
-                    binding.foodByCategoryLayout.visibility=View.GONE
+            when (state) {
+
+                is HomeState.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.mainLayout.visibility = View.GONE
+                    binding.foodByCategoryLayout.visibility = View.GONE
                 }
-                is HomeState.Category->{
-                    binding.progressBar.visibility=View.GONE
-                    binding.mainLayout.visibility=View.VISIBLE
-                    binding.foodByCategoryLayout.visibility=View.GONE
+
+                is HomeState.Category -> {
+                    binding.progressBar.visibility = View.GONE
+                    binding.mainLayout.visibility = View.VISIBLE
+                    binding.foodByCategoryLayout.visibility = View.GONE
                     categoryAdapter.submitList(state.categories)
                 }
-                is HomeState.Error->{
-                    binding.progressBar.visibility=View.GONE
-                    binding.mainLayout.visibility=View.GONE
-                    binding.foodByCategoryLayout.visibility=View.GONE
-                    Toast.makeText(requireContext(), state.throwable.message, Toast.LENGTH_SHORT).show()
+
+                is HomeState.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    binding.mainLayout.visibility = View.GONE
+                    binding.foodByCategoryLayout.visibility = View.GONE
+                    Toast.makeText(requireContext(), state.throwable.message, Toast.LENGTH_SHORT)
+                        .show()
                 }
 
-                is HomeState.Data->{
-                    binding.progressBar.visibility=View.GONE
-                    binding.mainLayout.visibility=View.VISIBLE
-                    binding.foodByCategoryLayout.visibility=View.GONE
+                is HomeState.Data -> {
+                    binding.progressBar.visibility = View.GONE
+                    binding.mainLayout.visibility = View.VISIBLE
+                    binding.foodByCategoryLayout.visibility = View.GONE
                     eventAdapter.submitList(state.events)
 
                 }
-                is HomeState.DataByFilter->{
-                    binding.progressBar.visibility=View.GONE
-                    binding.mainLayout.visibility=View.GONE
-                    binding.foodByCategoryLayout.visibility=View.VISIBLE
+
+                is HomeState.DataByFilter -> {
+                    binding.progressBar.visibility = View.GONE
+                    binding.mainLayout.visibility = View.GONE
+                    binding.foodByCategoryLayout.visibility = View.VISIBLE
                     eventFilteredAdapter.submitList(state.events)
                 }
 
-                else->{
+                else -> {
 
                 }
             }
 
         }
     }
-    fun backClicked(){
+
+    fun backClicked() {
 
     }
 
@@ -183,11 +196,30 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener {
 
     override fun onClicked(category: String) {
 
-        viewModel.fireBaseCategoryEventLiveRead(location,category)
+        viewModel.fireBaseCategoryEventLiveRead(location, category)
     }
 
     override fun onClickedEvent(event: String) {
         findNavController().navigate(HomeFragmentDirections.homeToDetail(event))
+    }
+
+    override fun onQueryTextSubmit(text: String?): Boolean {
+        text?.let {
+            if (it.length > 3) {
+                viewModel.firebaseSearchEvents(it)
+            }
+        }
+        return true
+    }
+
+    override fun onQueryTextChange(text: String?): Boolean {
+        text?.let {
+            if (it.length > 3) {
+                viewModel.firebaseSearchEvents( text)
+            }
+        }
+
+        return true
     }
 
 

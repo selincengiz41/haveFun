@@ -82,7 +82,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         requestPermission()
 
-
     }
 
     @SuppressLint("MissingPermission")
@@ -100,7 +99,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 is HomeState.Data -> {
-                    state.events.forEach {event ->
+                    state.events.forEach { event ->
 
 
                         val selectedLocation = com.google.android.gms.maps.model.LatLng(
@@ -110,48 +109,53 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
 
                         viewModel.categoryFirebase(event.type, success =
-                        {bmp->
-                            try {
-                                bmp?.let {
+                        { bmp ->
 
-                                    Glide.with(this)
-                                        .asBitmap()
-                                        .load(it)
-                                        .into(object : CustomTarget<Bitmap>(100,100){
-                                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                                val marker=MarkerOptions().position(selectedLocation).title(event.title)
-                                                    .snippet(event.id).icon(BitmapDescriptorFactory.fromBitmap(resource))
+                            bmp?.let {
 
-                                                map.addMarker(
-                                                    marker
-                                                )
-                                            }
-                                            override fun onLoadCleared(placeholder: Drawable?) {
-                                                // this is called when imageView is cleared on lifecycle call or for
-                                                // some other reason.
-                                                // if you are referencing the bitmap somewhere else too other than this imageView
-                                                // clear it here as you can no longer have the bitmap
-                                            }
-                                        })
+                                Glide.with(this)
+                                    .asBitmap()
+                                    .load(it)
+                                    .into(object : CustomTarget<Bitmap>(100, 100) {
+                                        override fun onResourceReady(
+                                            resource: Bitmap,
+                                            transition: Transition<in Bitmap>?
+                                        ) {
+                                            val marker =
+                                                MarkerOptions().position(selectedLocation)
+                                                    .title(event.title)
+                                                    .snippet(event.id).icon(
+                                                        BitmapDescriptorFactory.fromBitmap(
+                                                            resource
+                                                        )
+                                                    )
 
-                                }
+                                            map.addMarker(
+                                                marker
+                                            )
+                                        }
 
+                                        override fun onLoadCleared(placeholder: Drawable?) {
+                                            // this is called when imageView is cleared on lifecycle call or for
+                                            // some other reason.
+                                            // if you are referencing the bitmap somewhere else too other than this imageView
+                                            // clear it here as you can no longer have the bitmap
+                                        }
+                                    })
 
-                            }catch (e:Exception){
-                                Log.i("probblme",e.message.orEmpty())
                             }
 
                         }, fail = {
-                            val marker=MarkerOptions().position(selectedLocation).title(event.title)
-                                .snippet(event.id)
+                            val marker =
+                                MarkerOptions().position(selectedLocation).title(event.title)
+                                    .snippet(event.id)
 
                             map.addMarker(
                                 marker
                             )
-                        } , error = {
+                        }, error = {
                             Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                         })
-
 
 
                     }

@@ -21,16 +21,33 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repo: EventRepo,private val categoryRepo: CategoryRepo) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val repo: EventRepo,
+    private val categoryRepo: CategoryRepo
+) : ViewModel() {
 
     private var _homeState = MutableLiveData<HomeState>()
     val homeState: LiveData<HomeState>
         get() = _homeState
 
+    fun firebaseSearchEvents(text: String) {
+        _homeState.value = HomeState.Loading
+        repo.firebaseSearchEvents(text) { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _homeState.value = HomeState.DataByFilter(result.data)
+                }
+
+                is Resource.Error -> {
+                    _homeState.value = HomeState.Error(result.throwable)
+                }
+            }
+        }
+    }
 
     fun fireBaseCategoryLiveRead() {
         _homeState.value = HomeState.Loading
-        categoryRepo.fireBaseCategoryLiveRead  { result ->
+        categoryRepo.fireBaseCategoryLiveRead { result ->
             when (result) {
                 is Resource.Success -> {
                     _homeState.value = HomeState.Category(result.data)
@@ -45,7 +62,7 @@ class HomeViewModel @Inject constructor(private val repo: EventRepo,private val 
 
     fun fireBaseCategoryEventLiveRead(location: LatLng, category: String) {
         _homeState.value = HomeState.Loading
-        repo.fireBaseCategoryEventLiveRead(location,category) { result ->
+        repo.fireBaseCategoryEventLiveRead(location, category) { result ->
             when (result) {
                 is Resource.Success -> {
                     _homeState.value = HomeState.DataByFilter(result.data)

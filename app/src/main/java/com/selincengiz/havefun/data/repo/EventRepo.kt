@@ -13,7 +13,70 @@ import com.selincengiz.havefun.data.model.Event
 
 class EventRepo(private val db: FirebaseFirestore) {
 
-    fun fireBaseEventLiveRead(location: LatLng, result:(Resource<List<Event>> )->Unit){
+
+    fun firebaseSearchEvents(
+        text: String,
+        result: (Resource<List<Event>>) -> Unit
+    ) {
+
+        try {
+
+            db.collection("events")
+
+                .whereGreaterThanOrEqualTo("title", text)
+                .whereLessThanOrEqualTo("title", text + '\uf8ff')
+                .limit(40).addSnapshotListener { snapshot, error ->
+
+                    val tempList = arrayListOf<Event>()
+
+                    snapshot?.forEach { document ->
+
+                        val address = Address(
+                            document.get(FieldPath.of("adress", "country")) as String?,
+                            document.get(FieldPath.of("adress", "location")) as GeoPoint?,
+                            document.get(FieldPath.of("adress", "address")) as String?,
+
+                            )
+
+                        val info = CommunicationInfo(
+                            document.get(FieldPath.of("info", "email")) as String?,
+                            document.get(FieldPath.of("info", "phone")) as String?,
+                        )
+                        tempList.add(
+
+                            Event(
+                                document.id,
+                                document.get("title") as String?,
+                                document.get("date") as String?,
+                                document.get("type") as String?,
+                                document.get("personLimit") as Long?,
+                                document.get("locationTitle") as String?,
+                                address,
+                                info,
+                                document.get("price") as Double?,
+                            )
+                        )
+
+                    }
+                    error?.let {
+                        Log.i("fire", it.message.orEmpty())
+                        result(Resource.Error(it))
+
+                    } ?: kotlin.run {
+                        result(Resource.Success(tempList))
+                    }
+
+
+                }
+        } catch (e: Exception) {
+            result(Resource.Error(e))
+
+        }
+
+
+    }
+
+    fun fireBaseEventLiveRead(location: LatLng, result: (Resource<List<Event>>) -> Unit) {
         try {
             // Kullanıcının konumu
             val userGeoPoint = GeoPoint(location.latitude, location.longitude)
@@ -83,7 +146,7 @@ class EventRepo(private val db: FirebaseFirestore) {
                         result(Resource.Error(it))
 
                     } ?: kotlin.run {
-                        result(  Resource.Success(tempList))
+                        result(Resource.Success(tempList))
 
                     }
 
@@ -95,7 +158,11 @@ class EventRepo(private val db: FirebaseFirestore) {
     }
 
 
-    fun fireBaseCategoryEventLiveRead(location: LatLng, category: String, result:(Resource<List<Event>> )->Unit) {
+    fun fireBaseCategoryEventLiveRead(
+        location: LatLng,
+        category: String,
+        result: (Resource<List<Event>>) -> Unit
+    ) {
         try {
             // Kullanıcının konumu
             val userGeoPoint = GeoPoint(location.latitude, location.longitude)
@@ -175,7 +242,6 @@ class EventRepo(private val db: FirebaseFirestore) {
 
         }
     }
-
 
 
 }

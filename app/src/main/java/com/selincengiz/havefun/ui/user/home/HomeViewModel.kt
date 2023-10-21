@@ -35,7 +35,7 @@ class HomeViewModel @Inject constructor(
         repo.firebaseSearchEvents(text) { result ->
             when (result) {
                 is Resource.Success -> {
-                    _homeState.value = HomeState.DataByFilter(result.data)
+                    _homeState.value = HomeState.Data(result.data)
                 }
 
                 is Resource.Error -> {
@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(
         repo.fireBaseCategoryEventLiveRead(location, category) { result ->
             when (result) {
                 is Resource.Success -> {
-                    _homeState.value = HomeState.DataByFilter(result.data)
+                    _homeState.value = HomeState.Data(result.data)
                 }
 
                 is Resource.Error -> {

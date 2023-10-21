@@ -66,4 +66,32 @@ class MapViewModel @Inject constructor(
         })
 
     }
+
+    fun fireBaseCategoryLiveRead() {
+        categoryRepo.fireBaseCategoryLiveRead { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _homeState.value = HomeState.Category(result.data)
+                }
+
+                is Resource.Error -> {
+                    _homeState.value = HomeState.Error(result.throwable)
+                }
+            }
+        }
+    }
+
+    fun fireBaseCategoryEventLiveRead(location: LatLng, category: String) {
+        repo.fireBaseCategoryEventLiveRead(location, category) { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _homeState.value = HomeState.Data(result.data)
+                }
+
+                is Resource.Error -> {
+                    _homeState.value = HomeState.Error(result.throwable)
+                }
+            }
+        }
+    }
 }

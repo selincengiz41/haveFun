@@ -14,9 +14,12 @@ import android.graphics.Bitmap
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MarkerOptions
+
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils
 
 
 object Extensions {
@@ -29,6 +32,12 @@ object Extensions {
     fun ImageView.loadUrl(url: String?) {
 
         Glide.with(this.context).load(url).into(this)
+
+    }
+
+    fun ImageView.loadUrl(url: String?,targetColor:Int) {
+
+        Glide.with(this.context).load(url).apply(RequestOptions.bitmapTransform(ColorizeTransformation(targetColor))).into(this)
 
     }
 

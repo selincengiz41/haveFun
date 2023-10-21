@@ -67,6 +67,7 @@ dependencies {
     //Glide
     implementation "com.github.bumptech.glide:glide:4.15.1"
 
+
     //Roundable Layout
     implementation 'com.github.zladnrms:RoundableLayout:1.1.4'
 

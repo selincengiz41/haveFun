@@ -40,12 +40,13 @@ class EventAdapter (private val itemListener: ItemEventListener , private val db
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
+        var allSrc=""
         fun bind(event: Event) = with(binding) {
 
             categoryFirebase(event.type, success = {
                 ivCategory.loadUrl(it)
             }, fail = {
-                ivCategory.setImageResource(R.drawable.baseline_location_on_24)
+                ivCategory.loadUrl(allSrc)
             })
 
             tvTitle.text = event.title
@@ -69,14 +70,19 @@ class EventAdapter (private val itemListener: ItemEventListener , private val db
                 var isThere=false
                 for (document in documents) {
                     val txt= document.get("text") as String?
-                    val src= document.get("url") as String?
+                    val src= document.get("urlHome") as String?
 
                     if (txt.equals(category)){
                         success(src)
                         isThere=true
                     }
 
+                    if(txt.equals("All")){
+                        src?.let{
+                            allSrc=it
+                        }
 
+                    }
                 }
 
                 if (!isThere){

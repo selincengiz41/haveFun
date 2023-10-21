@@ -49,7 +49,6 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
     private val viewModel by viewModels<HomeViewModel>()
     private val categoryAdapter by lazy { CategoryAdapter(this) }
     private val eventAdapter by lazy { EventAdapter(this, db) }
-    private val eventFilteredAdapter by lazy { EventAdapter(this, db) }
     private lateinit var flpc: FusedLocationProviderClient
     private lateinit var locationTask: Task<Location>
     private lateinit var location: com.google.android.gms.maps.model.LatLng
@@ -81,7 +80,6 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         binding.profileLayout.background = null
         binding.categoriesRecycler.adapter = categoryAdapter
         binding.popularRecycler.adapter = eventAdapter
-        binding.foodsByFilterRecycler.adapter = eventFilteredAdapter
         return binding.root
     }
 
@@ -144,20 +142,17 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
                 is HomeState.Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
                     binding.mainLayout.visibility = View.GONE
-                    binding.foodByCategoryLayout.visibility = View.GONE
                 }
 
                 is HomeState.Category -> {
                     binding.progressBar.visibility = View.GONE
                     binding.mainLayout.visibility = View.VISIBLE
-                    binding.foodByCategoryLayout.visibility = View.GONE
                     categoryAdapter.submitList(state.categories)
                 }
 
                 is HomeState.Error -> {
                     binding.progressBar.visibility = View.GONE
                     binding.mainLayout.visibility = View.GONE
-                    binding.foodByCategoryLayout.visibility = View.GONE
                     Toast.makeText(requireContext(), state.throwable.message, Toast.LENGTH_SHORT)
                         .show()
                 }
@@ -165,17 +160,11 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
                 is HomeState.Data -> {
                     binding.progressBar.visibility = View.GONE
                     binding.mainLayout.visibility = View.VISIBLE
-                    binding.foodByCategoryLayout.visibility = View.GONE
                     eventAdapter.submitList(state.events)
 
                 }
 
-                is HomeState.DataByFilter -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.mainLayout.visibility = View.GONE
-                    binding.foodByCategoryLayout.visibility = View.VISIBLE
-                    eventFilteredAdapter.submitList(state.events)
-                }
+
 
                 else -> {
 
@@ -196,7 +185,13 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
 
     override fun onClicked(category: String) {
 
-        viewModel.fireBaseCategoryEventLiveRead(location, category)
+        if(category.equals("All")){
+          viewModel.fireBaseLiveRead(location)
+        }else{
+            viewModel.fireBaseCategoryEventLiveRead(location, category)
+        }
+
+
     }
 
     override fun onClickedEvent(event: String) {

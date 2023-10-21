@@ -3,6 +3,7 @@ package com.selincengiz.havefun.ui.user.map
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -31,18 +33,21 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.selincengiz.havefun.R
+import com.selincengiz.havefun.common.ColorizeTransformation
 
 import com.selincengiz.havefun.common.HomeState
 import com.selincengiz.havefun.common.PermissionUtils
 import com.selincengiz.havefun.common.PermissionUtils.checkPermission
 import com.selincengiz.havefun.common.PermissionUtils.shouldShowRationale
 import com.selincengiz.havefun.databinding.FragmentMapBinding
+import com.selincengiz.havefun.ui.adapter.CategoryAdapter
+import com.selincengiz.havefun.ui.adapter.ItemCategoryListener
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.URL
 
 
 @AndroidEntryPoint
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), OnMapReadyCallback, ItemCategoryListener {
 
     private lateinit var binding: FragmentMapBinding
 
@@ -51,6 +56,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var flpc: FusedLocationProviderClient
     private lateinit var locationTask: Task<Location>
     private lateinit var location: com.google.android.gms.maps.model.LatLng
+    private val categoryAdapter by lazy { CategoryAdapter(this) }
 
     @SuppressLint("MissingPermission")
     private val requestPermissionLauncher =
@@ -75,6 +81,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false)
         flpc = LocationServices.getFusedLocationProviderClient(requireActivity())
+        binding.categoriesRecycler.adapter = categoryAdapter
         return binding.root
     }
 
@@ -99,6 +106,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 is HomeState.Data -> {
+                    map.clear()
                     state.events.forEach { event ->
 
 
@@ -116,6 +124,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                                 Glide.with(this)
                                     .asBitmap()
                                     .load(it)
+                                    .apply(RequestOptions.bitmapTransform(ColorizeTransformation( Color.parseColor("#FF007F"))))
                                     .into(object : CustomTarget<Bitmap>(100, 100) {
                                         override fun onResourceReady(
                                             resource: Bitmap,
@@ -146,9 +155,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                             }
 
                         }, fail = {
+                            val bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)
                             val marker =
                                 MarkerOptions().position(selectedLocation).title(event.title)
-                                    .snippet(event.id)
+                                    .snippet(event.id).icon(bitmapDescriptor)
 
                             map.addMarker(
                                 marker
@@ -159,6 +169,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
 
                     }
+                }
+
+                is HomeState.Category->{
+                    categoryAdapter.submitList(state.categories)
                 }
 
                 else -> {
@@ -179,6 +193,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         locationTask.addOnSuccessListener {
             location = LatLng(it.latitude, it.longitude)
             viewModel.fireBaseLiveRead(location)
+            viewModel.fireBaseCategoryLiveRead()
             binding.maps.getFragment<SupportMapFragment>().getMapAsync(this@MapFragment)
         }
     }
@@ -210,6 +225,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             },
         )
 
+    }
+
+    override fun onClicked(category: String) {
+        if(category.equals("All")){
+            viewModel.fireBaseLiveRead(location)
+        }else{
+            viewModel.fireBaseCategoryEventLiveRead(location, category)
+        }
     }
 
 

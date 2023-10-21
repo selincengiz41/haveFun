@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -9,47 +10,60 @@
     <com.tistory.zladnrms.roundablelayout.RoundableLayout
         android:id="@+id/event_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_100sdp"
         android:layout_margin="@dimen/_10sdp"
-        app:backgroundColor="@color/lightBlue"
-        android:elevation="@dimen/_5sdp"
+        app:backgroundColor="@color/white"
+        android:elevation="@dimen/_3sdp"
+        app:cornerAll="@dimen/_13sdp">
+
+    <com.tistory.zladnrms.roundablelayout.RoundableLayout
+        android:id="@+id/category_layout"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_margin="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:cornerAll="@dimen/_13sdp">
 
         <ImageView
             android:id="@+id/iv_category"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_margin="@dimen/_10sdp"
-
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/photo" />
+    </com.tistory.zladnrms.roundablelayout.RoundableLayout>
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_8sdp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_10sdp"
             android:text="Pizza"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/_16ssp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/iv_category"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/category_layout"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_6sdp"
             android:text="01/24/2001 "
-            android:textColor="@color/white"
-            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/textColorHint"
+            android:textSize="@dimen/_12ssp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+            app:layout_constraintTop_toTopOf="@+id/category_layout" />
 
         <TextView
             android:id="@+id/tv_price"
@@ -57,13 +71,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_8sdp"
             android:text="120 $ "
-            android:textColor="@color/white"
+            android:textColor="@color/textColorHint"
             android:textSize="@dimen/_10ssp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_date"
             app:layout_constraintEnd_toEndOf="parent"
 
-            app:layout_constraintTop_toTopOf="@+id/tv_title" />
+            app:layout_constraintTop_toTopOf="@+id/tv_date" />
 
 
     </com.tistory.zladnrms.roundablelayout.RoundableLayout>

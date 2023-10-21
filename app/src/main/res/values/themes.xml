@@ -6,15 +6,17 @@
       <item name="colorPrimaryDark">@color/blue</item>
         <item name="colorAccent">@color/blue</item>
         <item name="colorOnPrimary">@color/blue</item>
-        <item name="bottomNavigationStyle">
-            @style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface
-        </item>
+    <item name="bottomNavigationStyle">
+          @style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface
+      </item>
 
 
 
-    </style>
 
-    <!-- Search Text Style. -->
+
+  </style>
+
+  <!-- Search Text Style. -->
     <style name="SearchTextStyle"  parent="Widget.AppCompat.SearchView">
         <!-- Custom values write to here for SearchEditText. -->
 

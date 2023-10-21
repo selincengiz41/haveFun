@@ -3,6 +3,7 @@ package com.selincengiz.havefun.di
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.selincengiz.havefun.data.repo.CategoryRepo
+import com.selincengiz.havefun.data.repo.DetailRepo
 import com.selincengiz.havefun.data.repo.EventRepo
 import dagger.Module
 import dagger.Provides
@@ -23,4 +24,9 @@ object RepoModule {
     @Singleton
     fun provideCategoryRepo( db: FirebaseFirestore) =
         CategoryRepo(db = db)
+
+    @Provides
+    @Singleton
+    fun provideDetailRepo( db: FirebaseFirestore) =
+        DetailRepo(db = db)
 }

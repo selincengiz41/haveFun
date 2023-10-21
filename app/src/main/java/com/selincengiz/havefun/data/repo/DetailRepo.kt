@@ -15,10 +15,10 @@ class DetailRepo(private val db: FirebaseFirestore) {
 
         try {
             db.collection("events")
-                .whereEqualTo("id", id)
+                .document(id)
                 .get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
+                .addOnSuccessListener { document ->
+
 
                         val address = Address(
                             document.get(FieldPath.of("adress", "country")) as String?,
@@ -47,7 +47,7 @@ class DetailRepo(private val db: FirebaseFirestore) {
 
                         result(Resource.Success(event))
                     }
-                }
+
                 .addOnFailureListener { exception ->
                     result(Resource.Error(exception))
                 }

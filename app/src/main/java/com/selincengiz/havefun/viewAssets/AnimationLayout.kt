@@ -20,6 +20,7 @@ class AnimationLayout
     private var dX = 0f
     private var dY = 0f
 
+
     private var isClicked = false
 
 
@@ -50,7 +51,7 @@ class AnimationLayout
         val scaleY = ObjectAnimator.ofFloat(this, "scaleY", scale)
         val animatorSet = AnimatorSet().apply {
             playTogether(scaleX, scaleY)
-            duration = 250
+            duration = 100
         }
         animatorSet.start()
 
@@ -59,29 +60,39 @@ class AnimationLayout
     override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
 
         val action = motionEvent.action
+
         return if (action == MotionEvent.ACTION_DOWN) {
-            animateButton(clickScale)
+
             downRawX = motionEvent.rawX
             downRawY = motionEvent.rawY
             dX = view.x - downRawX
             dY = view.y - downRawY
-           // view.setBackgroundResource(R.drawable.selected_btn_background)
+            animateButton(clickScale)
             true // Consumed
 
             true // Consumed
         } else if (action == MotionEvent.ACTION_UP) {
-            animateButton(defaultScale) // Varsayılan boyutuna geri dön
+
             val upRawX = motionEvent.rawX
             val upRawY = motionEvent.rawY
             val upDX = upRawX - downRawX
             val upDY = upRawY - downRawY
-         //   view.setBackgroundResource(R.drawable.btn_background)
+            animateButton(defaultScale) // Varsayılan boyutuna geri dön
             if (Math.abs(upDX) < CLICK_DRAG_TOLERANCE && Math.abs(upDY) < CLICK_DRAG_TOLERANCE) { // A click
                 performClick()
             } else { // A drag
+                animateButton(defaultScale)
                 true // Consumed
             }
-        } else {
+        }
+        else if(action==MotionEvent.ACTION_MOVE){
+
+            animateButton(defaultScale) // Varsayılan boyutuna geri dön
+
+            true
+        }
+
+        else {
             super.onTouchEvent(motionEvent)
         }
     }

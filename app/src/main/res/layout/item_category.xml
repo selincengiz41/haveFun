@@ -15,18 +15,19 @@
 
     <com.selincengiz.havefun.viewAssets.AnimationLayout
         android:id="@+id/layout"
-        android:layout_width="@dimen/_120sdp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10sdp"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginVertical="@dimen/_8sdp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
         app:backgroundColor="@{color}"
         android:elevation="@dimen/_5sdp"
         app:cornerAll="@dimen/_18sdp">
 
         <ImageView
             android:id="@+id/iv_category"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginVertical="@dimen/_6sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +38,7 @@
             android:id="@+id/tv_category"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_7sdp"
             android:text="Pizza"
             android:textColor="@color/white"
 

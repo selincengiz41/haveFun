@@ -37,7 +37,10 @@ object NetworkModule {
         addInterceptor { chain ->
             val original = chain.request()
             val requestBuilder = original.newBuilder()
-                .header("cookie", "__test=47cf31c57a4224f292ec27c24beee6a2; expires=2024-11-26T13:30:59.979Z; path=/") // İstediğiniz header'ı burada ekleyin
+                .header(
+                    "cookie",
+                    "__test=47cf31c57a4224f292ec27c24beee6a2; expires=2024-11-26T13:30:59.979Z; path=/"
+                ) // İstediğiniz header'ı burada ekleyin
             val request = requestBuilder.build()
             chain.proceed(request)
         }

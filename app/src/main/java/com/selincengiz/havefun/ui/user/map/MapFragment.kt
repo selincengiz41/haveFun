@@ -39,6 +39,9 @@ import com.selincengiz.havefun.common.HomeState
 import com.selincengiz.havefun.common.PermissionUtils
 import com.selincengiz.havefun.common.PermissionUtils.checkPermission
 import com.selincengiz.havefun.common.PermissionUtils.shouldShowRationale
+import com.selincengiz.havefun.data.model.ApiCategory
+import com.selincengiz.havefun.data.model.GetEventsByCategoriesRequest
+import com.selincengiz.havefun.data.model.GetEventsRequest
 import com.selincengiz.havefun.databinding.FragmentMapBinding
 import com.selincengiz.havefun.ui.adapter.CategoryAdapter
 import com.selincengiz.havefun.ui.adapter.ItemCategoryListener
@@ -57,6 +60,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, ItemCategoryListener {
     private lateinit var locationTask: Task<Location>
     private lateinit var location: com.google.android.gms.maps.model.LatLng
     private val categoryAdapter by lazy { CategoryAdapter(this) }
+    private lateinit var categories:
+            List<ApiCategory>
 
     @SuppressLint("MissingPermission")
     private val requestPermissionLauncher =
@@ -105,75 +110,82 @@ class MapFragment : Fragment(), OnMapReadyCallback, ItemCategoryListener {
                         .show()
                 }
 
-                is HomeState.Data -> {
+                is HomeState.ApiEvents -> {
                     map.clear()
                     state.events.forEach { event ->
 
 
                         val selectedLocation = com.google.android.gms.maps.model.LatLng(
-                            event.adress!!.location!!.latitude!!,
-                            event.adress!!.location!!.longitude!!
+                            event.locationLat,
+                            event.locationLong
                         )
 
+                        viewModel.categories?.let {
+                            it.forEach {
+                                if (it.categoryId!!.equals(event.categoryId)) {
 
-                        viewModel.categoryFirebase(event.type, success =
-                        { bmp ->
-
-                            bmp?.let {
-
-                                Glide.with(this)
-                                    .asBitmap()
-                                    .load(it)
-                                    .apply(RequestOptions.bitmapTransform(ColorizeTransformation( Color.parseColor("#FF007F"))))
-                                    .into(object : CustomTarget<Bitmap>(100, 100) {
-                                        override fun onResourceReady(
-                                            resource: Bitmap,
-                                            transition: Transition<in Bitmap>?
-                                        ) {
-                                            val marker =
-                                                MarkerOptions().position(selectedLocation)
-                                                    .title(event.title)
-                                                    .snippet(event.id).icon(
-                                                        BitmapDescriptorFactory.fromBitmap(
-                                                            resource
-                                                        )
-                                                    )
-
-                                            map.addMarker(
-                                                marker
+                                    if (event.categoryId == 7) {
+                                        val bitmapDescriptor =
+                                            BitmapDescriptorFactory.defaultMarker(
+                                                BitmapDescriptorFactory.HUE_ROSE
                                             )
-                                        }
+                                        val marker =
+                                            MarkerOptions().position(selectedLocation)
+                                                .title(event.title)
+                                                .snippet(event.id.toString()).icon(bitmapDescriptor)
 
-                                        override fun onLoadCleared(placeholder: Drawable?) {
-                                            // this is called when imageView is cleared on lifecycle call or for
-                                            // some other reason.
-                                            // if you are referencing the bitmap somewhere else too other than this imageView
-                                            // clear it here as you can no longer have the bitmap
-                                        }
-                                    })
+                                        map.addMarker(
+                                            marker
+                                        )
+                                    } else {
+                                        Glide.with(this)
+                                            .asBitmap()
+                                            .load(it.url)
+                                            .apply(
+                                                RequestOptions.bitmapTransform(
+                                                    ColorizeTransformation(Color.parseColor("#FF007F"))
+                                                )
+                                            )
+                                            .into(object : CustomTarget<Bitmap>(100, 100) {
+                                                override fun onResourceReady(
+                                                    resource: Bitmap,
+                                                    transition: Transition<in Bitmap>?
+                                                ) {
+                                                    val marker =
+                                                        MarkerOptions().position(selectedLocation)
+                                                            .title(event.title)
+                                                            .snippet(event.id.toString()).icon(
+                                                                BitmapDescriptorFactory.fromBitmap(
+                                                                    resource
+                                                                )
+                                                            )
 
+                                                    map.addMarker(
+                                                        marker
+                                                    )
+                                                }
+
+                                                override fun onLoadCleared(placeholder: Drawable?) {
+                                                    // this is called when imageView is cleared on lifecycle call or for
+                                                    // some other reason.
+                                                    // if you are referencing the bitmap somewhere else too other than this imageView
+                                                    // clear it here as you can no longer have the bitmap
+                                                }
+                                            })
+                                    }
+
+                                }
                             }
-
-                        }, fail = {
-                            val bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)
-                            val marker =
-                                MarkerOptions().position(selectedLocation).title(event.title)
-                                    .snippet(event.id).icon(bitmapDescriptor)
-
-                            map.addMarker(
-                                marker
-                            )
-                        }, error = {
-                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                        })
-
+                        }
 
                     }
                 }
 
-                is HomeState.Category->{
+                is HomeState.ApiCategory -> {
+                    categories = state.categories
                     categoryAdapter.submitList(state.categories)
                 }
+
 
                 else -> {
 
@@ -184,7 +196,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, ItemCategoryListener {
 
 
         map.setOnInfoWindowLongClickListener {
-            findNavController().navigate(MapFragmentDirections.mapToDetail(it.snippet))
+            findNavController().navigate(MapFragmentDirections.mapToDetail(it.snippet!!.toInt()))
         }
 
     }
@@ -192,8 +204,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, ItemCategoryListener {
     fun getLocation() {
         locationTask.addOnSuccessListener {
             location = LatLng(it.latitude, it.longitude)
-            viewModel.fireBaseLiveRead(location)
-            viewModel.fireBaseCategoryLiveRead()
+            viewModel.getCategories()
+            var getEventsRequest = GetEventsRequest(location.latitude, location.longitude)
+            viewModel.getEvents(getEventsRequest)
             binding.maps.getFragment<SupportMapFragment>().getMapAsync(this@MapFragment)
         }
     }
@@ -228,10 +241,24 @@ class MapFragment : Fragment(), OnMapReadyCallback, ItemCategoryListener {
     }
 
     override fun onClicked(category: String) {
-        if(category.equals("All")){
-            viewModel.fireBaseLiveRead(location)
-        }else{
-            viewModel.fireBaseCategoryEventLiveRead(location, category)
+        if (category.equals("Custom")) {
+            var getEventsRequest = GetEventsRequest(location.latitude, location.longitude)
+            viewModel.getEvents(getEventsRequest)
+        } else {
+            categories?.let {
+                it.forEach {
+                    if (it.name.equals(category)) {
+                        var getEventsByCategoriesRequest =
+                            GetEventsByCategoriesRequest(
+                                it.categoryId!!,
+                                location.latitude,
+                                location.longitude
+                            )
+                        viewModel.getEventsByCategories(getEventsByCategoriesRequest)
+                    }
+                }
+            }
+
         }
     }
 

@@ -6,19 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.selincengiz.havefun.R
 import com.selincengiz.havefun.common.Extensions.loadUrl
-import com.selincengiz.havefun.data.model.Category
-import com.selincengiz.havefun.data.model.Event
-import com.selincengiz.havefun.databinding.ItemCategoryBinding
+import com.selincengiz.havefun.data.model.ApiCategory
+import com.selincengiz.havefun.data.model.ApiEvents
 import com.selincengiz.havefun.databinding.ItemEventBinding
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
-class EventAdapter (private val itemListener: ItemEventListener , private val db: FirebaseFirestore) :
-    ListAdapter<Event, EventAdapter.EventViewHolder>(CategoryDiffCallBack()) {
+class EventAdapter(
+    private val itemListener: ItemEventListener, private val categories:
+    List<ApiCategory>
+) :
+    ListAdapter<ApiEvents, EventAdapter.EventViewHolder>(CategoryDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder =
         EventViewHolder(
@@ -26,7 +23,7 @@ class EventAdapter (private val itemListener: ItemEventListener , private val db
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), itemListener,db
+            ), itemListener, categories
         )
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) =
@@ -36,72 +33,41 @@ class EventAdapter (private val itemListener: ItemEventListener , private val db
     class EventViewHolder(
         private val binding: ItemEventBinding,
         private val listener: ItemEventListener,
-         private val db: FirebaseFirestore
+        private val categories:
+        List<ApiCategory>
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
-        var allSrc=""
-        fun bind(event: Event) = with(binding) {
+        fun bind(event: ApiEvents) = with(binding) {
 
-            categoryFirebase(event.type, success = {
-                ivCategory.loadUrl(it)
-            }, fail = {
-                ivCategory.loadUrl(allSrc)
-            })
+            categories.forEach {
+                if (it.categoryId!!.equals(event.categoryId)) {
+                    ivCategory.loadUrl(it.urlHome)
+                }
+            }
 
             tvTitle.text = event.title
-            tvDate.text=event.date
+            tvDate.text = event.date
             event.price?.let {
-                tvPrice.visibility=View.VISIBLE
-                tvPrice.text=it.toString()+" ₺"
-            }?: kotlin.run {
-                tvPrice.visibility=View.GONE
+                tvPrice.visibility = View.VISIBLE
+                tvPrice.text = it.toString() + " ₺"
+            } ?: kotlin.run {
+                tvPrice.visibility = View.GONE
             }
 
             root.setOnClickListener {
-                listener.onClickedEvent(event.id!!)
+                listener.onClickedEvent(event.id)
             }
-        }
-
-        fun categoryFirebase(category :String?, success: (String?) -> Unit, fail: () -> Unit){
-
-            db.collection("categories").get().addOnSuccessListener {
-                    documents ->
-                var isThere=false
-                for (document in documents) {
-                    val txt= document.get("text") as String?
-                    val src= document.get("urlHome") as String?
-
-                    if (txt.equals(category)){
-                        success(src)
-                        isThere=true
-                    }
-
-                    if(txt.equals("All")){
-                        src?.let{
-                            allSrc=it
-                        }
-
-                    }
-                }
-
-                if (!isThere){
-                    fail()
-                }
-            }
-
-
-
         }
 
     }
 
-    class CategoryDiffCallBack() : DiffUtil.ItemCallback<Event>() {
-        override fun areItemsTheSame(oldItem: Event, newItem: Event): Boolean {
+    class CategoryDiffCallBack() : DiffUtil.ItemCallback<ApiEvents>() {
+        override fun areItemsTheSame(oldItem: ApiEvents, newItem: ApiEvents): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {
+        override fun areContentsTheSame(oldItem: ApiEvents, newItem: ApiEvents): Boolean {
             return oldItem == newItem
         }
 
@@ -111,5 +77,5 @@ class EventAdapter (private val itemListener: ItemEventListener , private val db
 }
 
 interface ItemEventListener {
-    fun onClickedEvent(event: String)
+    fun onClickedEvent(event: Int)
 }

@@ -102,7 +102,6 @@
         android:label="DetailFragment" >
         <argument
             android:name="id"
-            app:argType="string"
-            app:nullable="true" />
+            app:argType="integer" />
     </fragment>
 </navigation>

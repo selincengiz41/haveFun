@@ -6,13 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.selincengiz.havefun.R
 import com.selincengiz.havefun.common.Extensions.loadUrl
-import com.selincengiz.havefun.data.model.Category
+import com.selincengiz.havefun.data.model.ApiCategory
 import com.selincengiz.havefun.databinding.ItemCategoryBinding
 
 class CategoryAdapter(private val itemListener: ItemCategoryListener) :
-    ListAdapter<Category, CategoryAdapter.CategoryViewHolder>(CategoryDiffCallBack()) {
+    ListAdapter<ApiCategory, CategoryAdapter.CategoryViewHolder>(CategoryDiffCallBack()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder =
@@ -25,7 +24,7 @@ class CategoryAdapter(private val itemListener: ItemCategoryListener) :
         )
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) =
-        holder.bind(getItem(position),position)
+        holder.bind(getItem(position), position)
 
     class CategoryViewHolder(
         private val binding: ItemCategoryBinding,
@@ -42,25 +41,31 @@ class CategoryAdapter(private val itemListener: ItemCategoryListener) :
             Color.parseColor("#E6E6FA"),
 
             )
-        fun bind(category: Category,position: Int) = with(binding) {
 
-            color=colors.get(0)
-            ivCategory.loadUrl(category.url,Color.parseColor("#FFFFFFFF"))
-            tvCategory.text = category.text
+        fun bind(category: ApiCategory, position: Int) = with(binding) {
+
+            color = colors.get(0)
+            ivCategory.loadUrl(category.url, Color.parseColor("#FFFFFFFF"))
+            if (category.name == "Custom") {
+                tvCategory.text = "All"
+            } else {
+                tvCategory.text = category.name
+
+            }
 
             root.setOnClickListener {
-                listener.onClicked(category.text!!)
+                listener.onClicked(category.name!!)
             }
         }
 
     }
 
-    class CategoryDiffCallBack() : DiffUtil.ItemCallback<Category>() {
-        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
-            return oldItem.id == newItem.id
+    class CategoryDiffCallBack() : DiffUtil.ItemCallback<ApiCategory>() {
+        override fun areItemsTheSame(oldItem: ApiCategory, newItem: ApiCategory): Boolean {
+            return oldItem.categoryId == newItem.categoryId
         }
 
-        override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
+        override fun areContentsTheSame(oldItem: ApiCategory, newItem: ApiCategory): Boolean {
             return oldItem == newItem
         }
 

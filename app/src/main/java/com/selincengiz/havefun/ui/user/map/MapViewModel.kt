@@ -1,46 +1,43 @@
 package com.selincengiz.havefun.ui.user.map
 
-import android.R.attr.src
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.firestore.FieldPath
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.GeoPoint
+import androidx.lifecycle.viewModelScope
 import com.selincengiz.havefun.common.HomeState
 import com.selincengiz.havefun.common.Resource
-import com.selincengiz.havefun.data.model.Address
-import com.selincengiz.havefun.data.model.CommunicationInfo
-import com.selincengiz.havefun.data.model.Event
-import com.selincengiz.havefun.data.repo.CategoryRepo
-import com.selincengiz.havefun.data.repo.EventRepo
+import com.selincengiz.havefun.data.model.GetEventsByCategoriesRequest
+import com.selincengiz.havefun.data.model.GetEventsRequest
+import com.selincengiz.havefun.data.repo.ApiEventRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.lang.Exception
-import java.lang.Math.PI
-import java.net.HttpURLConnection
-import java.net.URL
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-    private val repo: EventRepo,
-    private val categoryRepo: CategoryRepo
+    private val apiEventRepo: ApiEventRepo
 ) : ViewModel() {
 
     private var _homeState = MutableLiveData<HomeState>()
     val homeState: LiveData<HomeState>
         get() = _homeState
 
-    fun fireBaseLiveRead(location: LatLng) {
-        repo.fireBaseEventLiveRead(location) { result ->
+    private var _categories =
+        listOf<com.selincengiz.havefun.data.model.ApiCategory>()
+    val categories: List<com.selincengiz.havefun.data.model.ApiCategory>
+        get() = _categories
+
+
+    fun getCategories() {
+        viewModelScope.launch {
+            _homeState.value = HomeState.Loading
+            val result = apiEventRepo.getCategories()
             when (result) {
                 is Resource.Success -> {
-                    _homeState.value = HomeState.Data(result.data)
+                    _categories = result.data
+                    _homeState.value = HomeState.ApiCategory(result.data)
+
                 }
 
                 is Resource.Error -> {
@@ -50,28 +47,13 @@ class MapViewModel @Inject constructor(
         }
     }
 
-    fun categoryFirebase(
-        category: String?,
-        success: (String?) -> Unit,
-        fail: () -> Unit,
-        error: (Exception) -> Unit
-    ) {
-
-        categoryRepo.categoryFirebase(category, success = {
-            success(it)
-        }, fail = {
-            fail()
-        }, error = {
-            error(it)
-        })
-
-    }
-
-    fun fireBaseCategoryLiveRead() {
-        categoryRepo.fireBaseCategoryLiveRead { result ->
+    fun getEvents(getEventsRequest: GetEventsRequest) {
+        viewModelScope.launch {
+            _homeState.value = HomeState.Loading
+            val result = apiEventRepo.getEvents(getEventsRequest)
             when (result) {
                 is Resource.Success -> {
-                    _homeState.value = HomeState.Category(result.data)
+                    _homeState.value = HomeState.ApiEvents(result.data)
                 }
 
                 is Resource.Error -> {
@@ -81,11 +63,13 @@ class MapViewModel @Inject constructor(
         }
     }
 
-    fun fireBaseCategoryEventLiveRead(location: LatLng, category: String) {
-        repo.fireBaseCategoryEventLiveRead(location, category) { result ->
+    fun getEventsByCategories(getEventsByCategoriesRequest: GetEventsByCategoriesRequest) {
+        viewModelScope.launch {
+            _homeState.value = HomeState.Loading
+            val result = apiEventRepo.getEventsByCategories(getEventsByCategoriesRequest)
             when (result) {
                 is Resource.Success -> {
-                    _homeState.value = HomeState.Data(result.data)
+                    _homeState.value = HomeState.ApiEvents(result.data)
                 }
 
                 is Resource.Error -> {

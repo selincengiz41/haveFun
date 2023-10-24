@@ -29,6 +29,9 @@ import com.selincengiz.havefun.common.HomeState
 import com.selincengiz.havefun.common.PermissionUtils
 import com.selincengiz.havefun.common.PermissionUtils.checkPermission
 import com.selincengiz.havefun.common.PermissionUtils.shouldShowRationale
+import com.selincengiz.havefun.data.model.ApiCategory
+import com.selincengiz.havefun.data.model.GetEventsByCategoriesRequest
+import com.selincengiz.havefun.data.model.GetEventsRequest
 import com.selincengiz.havefun.databinding.FragmentHomeBinding
 import com.selincengiz.havefun.ui.adapter.CategoryAdapter
 import com.selincengiz.havefun.ui.adapter.EventAdapter
@@ -50,7 +53,7 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
     private lateinit var binding: FragmentHomeBinding
     private val viewModel by viewModels<HomeViewModel>()
     private val categoryAdapter by lazy { CategoryAdapter(this) }
-    private val eventAdapter by lazy { EventAdapter(this, db) }
+    private val eventAdapter by lazy { EventAdapter(this, viewModel.categories) }
     private lateinit var flpc: FusedLocationProviderClient
     private lateinit var locationTask: Task<Location>
     private lateinit var location: com.google.android.gms.maps.model.LatLng
@@ -81,7 +84,6 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         binding.homeFunctions = this
         binding.profileLayout.background = null
         binding.categoriesRecycler.adapter = categoryAdapter
-        binding.popularRecycler.adapter = eventAdapter
         return binding.root
     }
 
@@ -94,7 +96,7 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
             name = auth.currentUser?.displayName
 
         }
-        viewModel.fireBaseCategoryLiveRead()
+        viewModel.getCategories()
 
         observe()
 
@@ -105,8 +107,6 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         binding.navSlide.setOnClickListener(this)
         binding.navDoorIn.setOnClickListener(this)
         binding.navDoorOut.setOnClickListener(this)
-
-
 
 
         // Implement the drawer listener
@@ -127,7 +127,8 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
     fun getLocation() {
         locationTask.addOnSuccessListener {
             location = LatLng(it.latitude, it.longitude)
-            viewModel.fireBaseLiveRead(location)
+            var getEventsRequest = GetEventsRequest(location.latitude, location.longitude)
+            viewModel.getEvents(getEventsRequest)
         }
     }
 
@@ -170,9 +171,11 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
                     binding.mainLayout.visibility = View.GONE
                 }
 
-                is HomeState.Category -> {
+                is HomeState.ApiCategory -> {
+
                     binding.progressBar.visibility = View.GONE
                     binding.mainLayout.visibility = View.VISIBLE
+                    binding.popularRecycler.adapter = eventAdapter
                     categoryAdapter.submitList(state.categories)
                 }
 
@@ -183,13 +186,12 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
                         .show()
                 }
 
-                is HomeState.Data -> {
+                is HomeState.ApiEvents -> {
                     binding.progressBar.visibility = View.GONE
                     binding.mainLayout.visibility = View.VISIBLE
                     eventAdapter.submitList(state.events)
 
                 }
-
 
 
                 else -> {
@@ -210,15 +212,28 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
     }
 
     override fun onClicked(category: String) {
+        if (category.equals("Custom")) {
+            var getEventsRequest = GetEventsRequest(location.latitude, location.longitude)
+            viewModel.getEvents(getEventsRequest)
+        } else {
+            viewModel.categories?.let {
+                it.forEach {
+                    if (it.name.equals(category)) {
+                        var getEventsByCategoriesRequest =
+                            GetEventsByCategoriesRequest(
+                                it.categoryId!!,
+                                location.latitude,
+                                location.longitude
+                            )
+                        viewModel.getEventsByCategories(getEventsByCategoriesRequest)
+                    }
+                }
+            }
 
-        if(category.equals("All")){
-          viewModel.fireBaseLiveRead(location)
-        }else{
-            viewModel.fireBaseCategoryEventLiveRead(location, category)
         }
 
-
     }
+
     fun avoidDoubleClicks(view: View) {
         val DELAY_IN_MS: Long = 900
         if (!view.isClickable) {
@@ -227,7 +242,8 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         view.isClickable = false
         view.postDelayed({ view.isClickable = true }, DELAY_IN_MS)
     }
-    override fun onClickedEvent(event: String) {
+
+    override fun onClickedEvent(event: Int) {
         findNavController().navigate(HomeFragmentDirections.homeToDetail(event))
     }
 
@@ -243,7 +259,7 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
     override fun onQueryTextChange(text: String?): Boolean {
         text?.let {
             if (it.length > 3) {
-                viewModel.firebaseSearchEvents( text)
+                viewModel.firebaseSearchEvents(text)
             }
         }
 
@@ -256,14 +272,17 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
                 avoidDoubleClicks(binding.navScroll)
 
             }
+
             R.id.nav_slide -> {
                 avoidDoubleClicks(binding.navSlide)
 
             }
+
             R.id.nav_doorIn -> {
                 avoidDoubleClicks(binding.navDoorIn)
 
             }
+
             R.id.nav_doorOut -> {
                 avoidDoubleClicks(binding.navDoorIn)
 

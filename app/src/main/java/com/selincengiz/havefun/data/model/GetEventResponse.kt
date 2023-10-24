@@ -3,11 +3,11 @@ package com.selincengiz.havefun.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class GetCategoryResponse(
+data class GetEventResponse(
     @SerializedName("count")
-    val count: Int?,
+    val count: Int,
     @SerializedName("data")
-    val data: List<ApiCategory>?,
+    val data: List<ApiEvents>,
     @SerializedName("type")
-    val type: String?
+    val type: String
 )

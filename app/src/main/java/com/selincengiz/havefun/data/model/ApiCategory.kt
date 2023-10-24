@@ -3,15 +3,15 @@ package com.selincengiz.havefun.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Data(
+data class ApiCategory(
     @SerializedName("categoryId")
-    val categoryId: String,
+    val categoryId: Int?,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("url")
-    val url: String,
+    val url: String?,
     @SerializedName("urlDetail")
-    val urlDetail: String,
+    val urlDetail: String?,
     @SerializedName("urlHome")
-    val urlHome: String
+    val urlHome: String?
 )

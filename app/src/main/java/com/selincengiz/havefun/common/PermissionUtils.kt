@@ -11,7 +11,7 @@ object PermissionUtils {
     const val galleryPermission = Manifest.permission.READ_EXTERNAL_STORAGE
     const val locationFinePermission = Manifest.permission.ACCESS_FINE_LOCATION
 
-    fun Context.checkPermission(permission :String ,onGranted: () -> Unit, onDenied: () -> Unit) {
+    fun Context.checkPermission(permission: String, onGranted: () -> Unit, onDenied: () -> Unit) {
 
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -25,7 +25,7 @@ object PermissionUtils {
     }
 
 
-    fun Activity.shouldShowRationale(permission :String ,onGranted: () -> Unit) {
+    fun Activity.shouldShowRationale(permission: String, onGranted: () -> Unit) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
             onGranted()
         }

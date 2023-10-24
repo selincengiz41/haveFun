@@ -1,26 +1,55 @@
 package com.selincengiz.havefun.ui.event
 
-import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.fragment.findNavController
-import com.google.firebase.firestore.FirebaseFirestore
-import com.selincengiz.havefun.data.model.Event
+import androidx.lifecycle.viewModelScope
+import com.selincengiz.havefun.common.HomeState
+import com.selincengiz.havefun.common.Resource
+import com.selincengiz.havefun.data.model.AddEventRequest
+import com.selincengiz.havefun.data.repo.ApiEventRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateEventViewModel @Inject constructor(private val db: FirebaseFirestore) : ViewModel() {
+class CreateEventViewModel @Inject constructor(private val apiEventRepo: ApiEventRepo) :
+    ViewModel() {
 
-    fun firebaseSave(event: Event, success: () -> Unit, fail: (Exception) -> Unit) {
-        db.collection("events").document(event.title?:"")
-            .set(event)
-            .addOnSuccessListener {
-                success()
+    private var _homeState = MutableLiveData<HomeState>()
+    val homeState: LiveData<HomeState>
+        get() = _homeState
 
+
+    fun getCategories() {
+        viewModelScope.launch {
+            _homeState.value = HomeState.Loading
+            val result = apiEventRepo.getCategories()
+            when (result) {
+                is Resource.Success -> {
+                    _homeState.value = HomeState.ApiCategory(result.data)
+                }
+
+                is Resource.Error -> {
+                    _homeState.value = HomeState.Error(result.throwable)
+                }
             }
-            .addOnFailureListener {
-                fail(it)
+        }
+    }
 
+    fun addEvent(addEventRequest: AddEventRequest) {
+        viewModelScope.launch {
+            _homeState.value = HomeState.Loading
+            val result = apiEventRepo.addEvent(addEventRequest)
+            when (result) {
+                is Resource.Success -> {
+                    _homeState.value = HomeState.Message(result.data)
+                }
+
+                is Resource.Error -> {
+                    _homeState.value = HomeState.Error(result.throwable)
+                }
             }
+        }
     }
 }

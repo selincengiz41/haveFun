@@ -35,9 +35,10 @@ object Extensions {
 
     }
 
-    fun ImageView.loadUrl(url: String?,targetColor:Int) {
+    fun ImageView.loadUrl(url: String?, targetColor: Int) {
 
-        Glide.with(this.context).load(url).apply(RequestOptions.bitmapTransform(ColorizeTransformation(targetColor))).into(this)
+        Glide.with(this.context).load(url)
+            .apply(RequestOptions.bitmapTransform(ColorizeTransformation(targetColor))).into(this)
 
     }
 

@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.selincengiz.havefun.R
 import com.selincengiz.havefun.common.HomeState
+import com.selincengiz.havefun.data.model.GetEventByIdRequest
 import com.selincengiz.havefun.databinding.FragmentDetailBinding
 import com.selincengiz.havefun.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +37,8 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         args.id?.let {
-            viewModel.firebaseGetEvent(it)
+            var getEventByIdRequest = GetEventByIdRequest(it)
+            viewModel.getEventById(getEventByIdRequest)
         }
 
         observe()
@@ -46,32 +48,36 @@ class DetailFragment : Fragment() {
     fun observe() {
         viewModel.homeState.observe(viewLifecycleOwner) { state ->
 
-            with(binding){
+            with(binding) {
 
 
-            when (state) {
+                when (state) {
 
-                is HomeState.Detail -> {
-                    progressBar2.visibility=View.GONE
-                    snippet.text=state.event.title
+                    is HomeState.ApiDetail -> {
+                        progressBar2.visibility = View.GONE
+                        snippet.text = state.event.get(0).title
+                    }
+
+                    is HomeState.Loading -> {
+
+                        progressBar2.visibility = View.VISIBLE
+
+                    }
+
+                    is HomeState.Error -> {
+                        Toast.makeText(
+                            requireContext(),
+                            state.throwable.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    else -> {
+
+                    }
+
+
                 }
-
-                is HomeState.Loading -> {
-
-                    progressBar2.visibility=View.VISIBLE
-
-                }
-
-                is HomeState.Error -> {
-                    Toast.makeText(requireContext(), state.throwable.message, Toast.LENGTH_SHORT).show()
-                }
-
-                else -> {
-
-                }
-
-
-            }
             }
 
         }

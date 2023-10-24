@@ -3,7 +3,7 @@ package com.selincengiz.havefun.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class AddEventRequest(
+data class ApiEvents(
     @SerializedName("address")
     val address: String,
     @SerializedName("categoryId")
@@ -14,6 +14,8 @@ data class AddEventRequest(
     val date: String,
     @SerializedName("email")
     val email: String,
+    @SerializedName("id")
+    val id: Int,
     @SerializedName("locationLat")
     val locationLat: Double,
     @SerializedName("locationLong")

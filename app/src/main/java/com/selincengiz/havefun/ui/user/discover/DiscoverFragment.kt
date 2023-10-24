@@ -22,10 +22,10 @@ import com.selincengiz.havefun.databinding.FragmentDiscoverBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DiscoverFragment : Fragment() , View.OnClickListener{
+class DiscoverFragment : Fragment(), View.OnClickListener {
 
 
-    private lateinit var binding :FragmentDiscoverBinding
+    private lateinit var binding: FragmentDiscoverBinding
     private val viewModel by viewModels<DiscoverViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +37,14 @@ class DiscoverFragment : Fragment() , View.OnClickListener{
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_discover,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_discover, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getCategories()
+
         observe()
 
         // Set color for the container's content as transparent
@@ -54,8 +54,6 @@ class DiscoverFragment : Fragment() , View.OnClickListener{
         binding.navSlide.setOnClickListener(this)
         binding.navDoorIn.setOnClickListener(this)
         binding.navDoorOut.setOnClickListener(this)
-
-
 
 
         // Implement the drawer listener
@@ -73,21 +71,16 @@ class DiscoverFragment : Fragment() , View.OnClickListener{
 
     }
 
-    fun observe(){
-        viewModel.homeState.observe(viewLifecycleOwner){state->
+    fun observe() {
+        viewModel.homeState.observe(viewLifecycleOwner) { state ->
 
-            when(state)
-            {
-                is HomeState.Deneme->{
-                    state.categories.forEach {
-                        Log.i("hadibakamm",it.name)
-                    }
+            when (state) {
 
+                is HomeState.Error -> {
+                    Log.i("hadibakamm", state.throwable.message!!)
                 }
-                is HomeState.Error->{
-                    Log.i("hadibakamm",state.throwable.message!!)
-                }
-                else->{
+
+                else -> {
 
                 }
             }
@@ -101,14 +94,17 @@ class DiscoverFragment : Fragment() , View.OnClickListener{
                 avoidDoubleClicks(binding.navScroll)
 
             }
+
             R.id.nav_slide -> {
                 avoidDoubleClicks(binding.navSlide)
 
             }
+
             R.id.nav_doorIn -> {
                 avoidDoubleClicks(binding.navDoorIn)
 
             }
+
             R.id.nav_doorOut -> {
                 avoidDoubleClicks(binding.navDoorIn)
 
@@ -116,7 +112,7 @@ class DiscoverFragment : Fragment() , View.OnClickListener{
         }
     }
 
-    
+
     fun avoidDoubleClicks(view: View) {
         val DELAY_IN_MS: Long = 900
         if (!view.isClickable) {

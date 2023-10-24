@@ -6,8 +6,8 @@ import kotlinx.parcelize.Parcelize
 
 
 data class Address(
-    val country:String?,
-    val location:GeoPoint?,
-    val address:String?
+    val country: String?,
+    val location: GeoPoint?,
+    val address: String?
 
 )

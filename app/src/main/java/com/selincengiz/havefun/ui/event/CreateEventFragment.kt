@@ -19,7 +19,6 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.adevinta.leku.ADDRESS
 import com.adevinta.leku.LATITUDE
 import com.adevinta.leku.LOCATION_ADDRESS
@@ -39,11 +38,12 @@ import com.google.firebase.firestore.GeoPoint
 import com.selincengiz.havefun.R
 import com.selincengiz.havefun.common.Extensions.showDatePicker
 import com.selincengiz.havefun.common.Extensions.showTimePicker
+import com.selincengiz.havefun.common.HomeState
 import com.selincengiz.havefun.common.PermissionUtils
 import com.selincengiz.havefun.common.PermissionUtils.checkPermission
 import com.selincengiz.havefun.common.PermissionUtils.shouldShowRationale
-import com.selincengiz.havefun.data.model.CommunicationInfo
-import com.selincengiz.havefun.data.model.Event
+import com.selincengiz.havefun.data.model.AddEventRequest
+import com.selincengiz.havefun.data.model.ApiCategory
 import com.selincengiz.havefun.databinding.CustomTypeAlertBinding
 import com.selincengiz.havefun.databinding.FragmentCreateEventBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,6 +58,8 @@ class CreateEventFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationTask: Task<Location>
     private var locationAdress: com.selincengiz.havefun.data.model.Address? = null
     private val viewModel by viewModels<CreateEventViewModel>()
+    private lateinit var categories:
+            List<ApiCategory>
 
     val lekuActivityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -127,14 +129,45 @@ class CreateEventFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        spinnerAdapter()
+        viewModel.getCategories()
+
+        observe()
 
     }
 
-    fun spinnerAdapter() = with(binding) {
+    fun observe() {
+        viewModel.homeState.observe(viewLifecycleOwner) { state ->
+
+            when (state) {
+                is HomeState.ApiCategory -> {
+                    spinnerAdapter(state.categories)
+                    categories = state.categories
+
+                }
+
+                is HomeState.Message -> {
+                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                }
+
+                is HomeState.Error -> {
+
+                    Toast.makeText(requireContext(), state.throwable.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    fun spinnerAdapter(spinnerList: List<ApiCategory>) = with(binding) {
+        var saveTypeList = ArrayList<String>()
+        spinnerList.forEach {
+            saveTypeList.add(it.name!!)
+        }
         var selectedType = ""
-        var saveTypeList =
-            mutableListOf("Concert", "Cinema", "Sport", "Art", "Museum", "Theatre", "Custom")
         val saveTypeAdapter = ArrayAdapter(
             requireContext(),
             androidx.transition.R.layout.support_simple_spinner_dropdown_item,
@@ -220,27 +253,34 @@ class CreateEventFragment : Fragment(), OnMapReadyCallback {
 
         if (title.isNullOrEmpty().not() && date.isNullOrEmpty().not() && type.isNullOrEmpty()
                 .not() && personLimit.isNullOrEmpty().not() && locationTitle.isNullOrEmpty()
-                .not() && locationAdress != null && communicationMail.isNullOrEmpty().not() && communicationPhone.isNullOrEmpty().not()
+                .not() && locationAdress != null && communicationMail.isNullOrEmpty()
+                .not() && communicationPhone.isNullOrEmpty().not()
         ) {
-            val info = CommunicationInfo(communicationPhone, communicationMail)
-            val event = Event(
-                "",
-                title,
+
+            var categoryId = 7
+            categories?.let {
+                it.forEach {
+                    if (it.name.equals(type)) {
+                        categoryId = it.categoryId!!
+                    }
+                }
+            }
+
+            val addEventRequest = AddEventRequest(
+                locationAdress!!.address!!, categoryId,
+                locationAdress!!.country!!,
                 date,
-                type,
-                personLimit.toLongOrNull(),
+                communicationMail,
+                locationAdress!!.location!!.latitude,
+                locationAdress!!.location!!.longitude,
                 locationTitle,
-                locationAdress,
-                info,
-                price.toDoubleOrNull()
+                personLimit.toInt(),
+                communicationPhone,
+                price.toDoubleOrNull(),
+                title
             )
-            //firebase
-            viewModel.firebaseSave(event, success = {
-                Toast.makeText(requireContext(), "Succesfully saved.", Toast.LENGTH_SHORT).show()
-                findNavController().navigateUp()
-            }, fail = {
-                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-            })
+
+            viewModel.addEvent(addEventRequest)
 
         } else {
             Toast.makeText(requireContext(), "Please fill the required zone!", Toast.LENGTH_SHORT)

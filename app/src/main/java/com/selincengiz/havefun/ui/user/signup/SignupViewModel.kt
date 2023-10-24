@@ -14,7 +14,6 @@ import javax.inject.Inject
 class SignupViewModel @Inject constructor(private val auth: FirebaseAuth) : ViewModel() {
 
 
-
     private var _homeState = MutableLiveData<HomeState>()
     val homeState: LiveData<HomeState>
         get() = _homeState
@@ -27,7 +26,7 @@ class SignupViewModel @Inject constructor(private val auth: FirebaseAuth) : View
                     firebaseUserProfileChange(name, imageUri)
                 }
                 task.addOnFailureListener {
-                    _homeState.value =HomeState.Error(it)
+                    _homeState.value = HomeState.Error(it)
 
                 }
 
@@ -44,11 +43,11 @@ class SignupViewModel @Inject constructor(private val auth: FirebaseAuth) : View
             ?.addOnCompleteListener { task ->
 
                 task.addOnSuccessListener {
-                    _homeState.value =HomeState.SignUp("Successfully signed up.")
+                    _homeState.value = HomeState.SignUp("Successfully signed up.")
 
                 }
                 task.addOnFailureListener {
-                    _homeState.value =HomeState.Error(it)
+                    _homeState.value = HomeState.Error(it)
                 }
 
             }

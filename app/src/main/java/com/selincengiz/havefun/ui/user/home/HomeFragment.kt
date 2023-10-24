@@ -32,6 +32,7 @@ import com.selincengiz.havefun.common.PermissionUtils.shouldShowRationale
 import com.selincengiz.havefun.data.model.ApiCategory
 import com.selincengiz.havefun.data.model.GetEventsByCategoriesRequest
 import com.selincengiz.havefun.data.model.GetEventsRequest
+import com.selincengiz.havefun.data.model.SearchRequest
 import com.selincengiz.havefun.databinding.FragmentHomeBinding
 import com.selincengiz.havefun.ui.adapter.CategoryAdapter
 import com.selincengiz.havefun.ui.adapter.EventAdapter
@@ -250,7 +251,8 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
     override fun onQueryTextSubmit(text: String?): Boolean {
         text?.let {
             if (it.length > 3) {
-                viewModel.firebaseSearchEvents(it)
+                var searchRequest = SearchRequest(it)
+                viewModel.search(searchRequest)
             }
         }
         return true
@@ -259,7 +261,8 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
     override fun onQueryTextChange(text: String?): Boolean {
         text?.let {
             if (it.length > 3) {
-                viewModel.firebaseSearchEvents(text)
+                var searchRequest = SearchRequest(it)
+                viewModel.search(searchRequest)
             }
         }
 

@@ -8,6 +8,7 @@ import com.selincengiz.havefun.common.HomeState
 import com.selincengiz.havefun.common.Resource
 import com.selincengiz.havefun.data.model.GetEventsByCategoriesRequest
 import com.selincengiz.havefun.data.model.GetEventsRequest
+import com.selincengiz.havefun.data.model.SearchRequest
 import com.selincengiz.havefun.data.repo.ApiEventRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -29,8 +30,20 @@ class HomeViewModel @Inject constructor(
         get() = _categories
 
 
-    fun firebaseSearchEvents(text: String) {
+    fun search(searchRequest: SearchRequest) {
+        viewModelScope.launch {
+            _homeState.value = HomeState.Loading
+            val result = apiEventRepo.search(searchRequest)
+            when (result) {
+                is Resource.Success -> {
+                    _homeState.value = HomeState.ApiEvents(result.data)
+                }
 
+                is Resource.Error -> {
+                    _homeState.value = HomeState.Error(result.throwable)
+                }
+            }
+        }
     }
 
     fun getCategories() {

@@ -7,6 +7,7 @@ import com.selincengiz.havefun.data.model.ApiEvents
 import com.selincengiz.havefun.data.model.GetEventByIdRequest
 import com.selincengiz.havefun.data.model.GetEventsByCategoriesRequest
 import com.selincengiz.havefun.data.model.GetEventsRequest
+import com.selincengiz.havefun.data.model.SearchRequest
 
 import com.selincengiz.havefun.data.source.remote.EventService
 import java.lang.Exception
@@ -60,6 +61,17 @@ class ApiEventRepo(
 
         return try {
             Resource.Success(eventService.getEventById(getEventByIdRequest).data.orEmpty())
+        } catch (e: Exception) {
+
+            Resource.Error(e)
+        }
+    }
+
+
+    suspend fun search(searchRequest: SearchRequest): Resource<List<ApiEvents>> {
+
+        return try {
+            Resource.Success(eventService.search(searchRequest).data.orEmpty())
         } catch (e: Exception) {
 
             Resource.Error(e)

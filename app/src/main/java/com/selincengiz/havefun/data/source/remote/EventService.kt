@@ -8,6 +8,7 @@ import com.selincengiz.havefun.data.model.GetEventByIdRequest
 import com.selincengiz.havefun.data.model.GetEventResponse
 import com.selincengiz.havefun.data.model.GetEventsByCategoriesRequest
 import com.selincengiz.havefun.data.model.GetEventsRequest
+import com.selincengiz.havefun.data.model.SearchRequest
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -28,5 +29,8 @@ interface EventService {
 
     @POST("get_event_by_id.php")
     suspend fun getEventById(@Body getEventByIdRequest: GetEventByIdRequest): GetEventResponse
+
+    @POST("search.php")
+    suspend fun search(@Body searchRequest: SearchRequest): GetEventResponse
 
 }

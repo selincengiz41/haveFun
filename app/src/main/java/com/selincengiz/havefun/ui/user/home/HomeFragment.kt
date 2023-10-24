@@ -1,6 +1,7 @@
 package com.selincengiz.havefun.ui.user.home
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mindinventory.midrawer.MIDrawerView
 import com.selincengiz.havefun.R
 import com.selincengiz.havefun.common.Extensions.loadUrl
 import com.selincengiz.havefun.common.HomeState
@@ -39,7 +41,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
-    android.widget.SearchView.OnQueryTextListener {
+    android.widget.SearchView.OnQueryTextListener, View.OnClickListener {
     @Inject
     lateinit var auth: FirebaseAuth
 
@@ -95,6 +97,30 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         viewModel.fireBaseCategoryLiveRead()
 
         observe()
+
+        // Set color for the container's content as transparent
+        binding.drawerLayout.setScrimColor(Color.TRANSPARENT)
+
+        binding.navScroll.setOnClickListener(this)
+        binding.navSlide.setOnClickListener(this)
+        binding.navDoorIn.setOnClickListener(this)
+        binding.navDoorOut.setOnClickListener(this)
+
+
+
+
+        // Implement the drawer listener
+        binding.drawerLayout.setMIDrawerListener(object : MIDrawerView.MIDrawerEvents {
+            override fun onDrawerOpened(drawerView: View) {
+                super.onDrawerOpened(drawerView)
+
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                super.onDrawerClosed(drawerView)
+
+            }
+        })
 
     }
 
@@ -193,7 +219,14 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
 
 
     }
-
+    fun avoidDoubleClicks(view: View) {
+        val DELAY_IN_MS: Long = 900
+        if (!view.isClickable) {
+            return
+        }
+        view.isClickable = false
+        view.postDelayed({ view.isClickable = true }, DELAY_IN_MS)
+    }
     override fun onClickedEvent(event: String) {
         findNavController().navigate(HomeFragmentDirections.homeToDetail(event))
     }
@@ -215,6 +248,27 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         }
 
         return true
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.nav_scroll -> {
+                avoidDoubleClicks(binding.navScroll)
+
+            }
+            R.id.nav_slide -> {
+                avoidDoubleClicks(binding.navSlide)
+
+            }
+            R.id.nav_doorIn -> {
+                avoidDoubleClicks(binding.navDoorIn)
+
+            }
+            R.id.nav_doorOut -> {
+                avoidDoubleClicks(binding.navDoorIn)
+
+            }
+        }
     }
 
 

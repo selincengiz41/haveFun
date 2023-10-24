@@ -102,6 +102,9 @@ dependencies {
 
 
     //Drawer
-    implementation 'com.github.mindinventory:minavdrawer:1.2.2'
+    implementation 'com.github.mindinventory:minavdrawer:1.2.1'
+
+    //Chucker
+    implementation("com.github.chuckerteam.chucker:library:4.0.0")
 
 }

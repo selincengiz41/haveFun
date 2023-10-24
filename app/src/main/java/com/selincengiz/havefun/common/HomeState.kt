@@ -13,5 +13,7 @@ sealed interface HomeState {
     data class Login(val message:String):HomeState
     data class SignUp(val message:String):HomeState
 
+    data class Deneme(val categories: List<com.selincengiz.havefun.data.model.Data>) : HomeState
+
 
 }

@@ -5,6 +5,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.selincengiz.havefun.data.repo.CategoryRepo
 import com.selincengiz.havefun.data.repo.DetailRepo
 import com.selincengiz.havefun.data.repo.EventRepo
+import com.selincengiz.havefun.data.repo.FoodRepo
+import com.selincengiz.havefun.data.source.remote.EventService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,4 +31,9 @@ object RepoModule {
     @Singleton
     fun provideDetailRepo( db: FirebaseFirestore) =
         DetailRepo(db = db)
+
+    @Provides
+    @Singleton
+    fun provideFoodRepo( eventService: EventService) =
+        FoodRepo(eventService)
 }

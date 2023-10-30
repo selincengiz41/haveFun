@@ -23,11 +23,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.selincengiz.havefun.R
 import com.selincengiz.havefun.common.Extensions.loadUrl
 import com.selincengiz.havefun.databinding.ActivityMainBinding
+import com.selincengiz.havefun.ui.user.map.MapFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),MapFragment.BottomNavListener {
     @Inject
     lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityMainBinding
@@ -78,5 +79,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
+    override fun bottomNavListenerEvent(event: Boolean) {
+        binding.visibilityBottomNav=!event
+    }
+
 
 }

@@ -24,12 +24,6 @@ class HomeViewModel @Inject constructor(
     val homeState: LiveData<HomeState>
         get() = _homeState
 
-    private var _categories =
-        listOf<com.selincengiz.havefun.data.model.ApiCategory>()
-    val categories: List<com.selincengiz.havefun.data.model.ApiCategory>
-        get() = _categories
-
-
     fun search(searchRequest: SearchRequest) {
         viewModelScope.launch {
             _homeState.value = HomeState.Loading
@@ -52,7 +46,6 @@ class HomeViewModel @Inject constructor(
             val result = apiEventRepo.getCategories()
             when (result) {
                 is Resource.Success -> {
-                    _categories = result.data
                     _homeState.value = HomeState.ApiCategory(result.data)
                 }
 

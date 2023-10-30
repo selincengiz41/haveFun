@@ -25,6 +25,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -33,14 +34,14 @@
             <com.tistory.zladnrms.roundablelayout.RoundableLayout
                 android:id="@+id/background"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_120sdp"
+                android:layout_height="@dimen/_140sdp"
                 android:backgroundTint="@color/blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:cornerLeftBottom="@dimen/_20sdp"
                 app:cornerRightBottom="@dimen/_20sdp"
-                android:elevation="@dimen/_10sdp"
+
                 >
 
                 <com.tistory.zladnrms.roundablelayout.RoundableLayout
@@ -102,13 +103,14 @@
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:iconifiedByDefault="false"
                     android:padding="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:queryBackground="@null"
                     android:queryHint=" Find Your Event"
+
                     android:searchHintIcon="@drawable/baseline_search_24"
                     android:searchIcon="@drawable/baseline_search_24"
                     android:textSize="@dimen/_16ssp"
                     android:textStyle="italic"
-                    app:layout_constraintBottom_toBottomOf="@+id/background"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/profileLayout" />
@@ -120,7 +122,8 @@
                 android:id="@+id/categories_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+
+                android:layout_marginTop="@dimen/_minus20sdp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"

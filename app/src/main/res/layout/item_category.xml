@@ -8,6 +8,9 @@
         <variable
             name="color"
             type="Integer" />
+        <variable
+            name="colorText"
+            type="Integer" />
     </data>
 
 
@@ -20,7 +23,7 @@
         android:layout_marginVertical="@dimen/_8sdp"
         android:layout_marginHorizontal="@dimen/_5sdp"
         app:backgroundColor="@{color}"
-        android:elevation="@dimen/_5sdp"
+        android:elevation="@dimen/_1sdp"
         app:cornerAll="@dimen/_18sdp">
 
         <ImageView
@@ -40,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_7sdp"
             android:text="Pizza"
-            android:textColor="@color/white"
+            android:textColor="@{colorText}"
 
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold"

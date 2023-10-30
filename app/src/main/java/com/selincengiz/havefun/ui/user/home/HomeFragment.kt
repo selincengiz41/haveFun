@@ -4,20 +4,17 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -29,7 +26,6 @@ import com.selincengiz.havefun.common.HomeState
 import com.selincengiz.havefun.common.PermissionUtils
 import com.selincengiz.havefun.common.PermissionUtils.checkPermission
 import com.selincengiz.havefun.common.PermissionUtils.shouldShowRationale
-import com.selincengiz.havefun.data.model.ApiCategory
 import com.selincengiz.havefun.data.model.GetEventsByCategoriesRequest
 import com.selincengiz.havefun.data.model.GetEventsRequest
 import com.selincengiz.havefun.data.model.SearchRequest
@@ -38,14 +34,14 @@ import com.selincengiz.havefun.ui.adapter.CategoryAdapter
 import com.selincengiz.havefun.ui.adapter.EventAdapter
 import com.selincengiz.havefun.ui.adapter.ItemCategoryListener
 import com.selincengiz.havefun.ui.adapter.ItemEventListener
-import com.selincengiz.havefun.ui.user.login.LoginViewModel
-import com.selincengiz.havefun.ui.user.map.MapFragmentDirections
+import com.selincengiz.havefun.ui.user.map.MapFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
-    android.widget.SearchView.OnQueryTextListener, View.OnClickListener {
+    android.widget.SearchView.OnQueryTextListener, View.OnClickListener,
+    View.OnFocusChangeListener {
     @Inject
     lateinit var auth: FirebaseAuth
 
@@ -53,8 +49,8 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
     lateinit var db: FirebaseFirestore
     private lateinit var binding: FragmentHomeBinding
     private val viewModel by viewModels<HomeViewModel>()
-    private val categoryAdapter by lazy { CategoryAdapter(this) }
-    private val eventAdapter by lazy { EventAdapter(this, viewModel.categories) }
+    private val categoryAdapter by lazy { CategoryAdapter(this, "Home") }
+    private val eventAdapter by lazy { EventAdapter(this) }
     private lateinit var flpc: FusedLocationProviderClient
     private lateinit var locationTask: Task<Location>
     private lateinit var location: com.google.android.gms.maps.model.LatLng
@@ -85,6 +81,7 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         binding.homeFunctions = this
         binding.profileLayout.background = null
         binding.categoriesRecycler.adapter = categoryAdapter
+        binding.popularRecycler.adapter = eventAdapter
         return binding.root
     }
 
@@ -92,11 +89,19 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         super.onViewCreated(view, savedInstanceState)
         requestPermission()
         binding.searchView.setOnQueryTextListener(this)
+        binding.searchView.setOnQueryTextFocusChangeListener(this)
         with(binding) {
             profile.loadUrl(auth.currentUser?.photoUrl)
             name = auth.currentUser?.displayName
 
         }
+
+
+        binding.layout.setOnClickListener {
+            binding.searchView.clearFocus()
+        }
+
+
         viewModel.getCategories()
 
         observe()
@@ -170,19 +175,21 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
                 is HomeState.Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
                     binding.mainLayout.visibility = View.GONE
+                    binding.categoriesRecycler.visibility= View.GONE
                 }
 
                 is HomeState.ApiCategory -> {
 
                     binding.progressBar.visibility = View.GONE
                     binding.mainLayout.visibility = View.VISIBLE
-                    binding.popularRecycler.adapter = eventAdapter
+                    binding.categoriesRecycler.visibility= View.VISIBLE
                     categoryAdapter.submitList(state.categories)
                 }
 
                 is HomeState.Error -> {
                     binding.progressBar.visibility = View.GONE
                     binding.mainLayout.visibility = View.GONE
+                    binding.categoriesRecycler.visibility= View.GONE
                     Toast.makeText(requireContext(), state.throwable.message, Toast.LENGTH_SHORT)
                         .show()
                 }
@@ -190,8 +197,8 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
                 is HomeState.ApiEvents -> {
                     binding.progressBar.visibility = View.GONE
                     binding.mainLayout.visibility = View.VISIBLE
+                    binding.categoriesRecycler.visibility= View.VISIBLE
                     eventAdapter.submitList(state.events)
-
                 }
 
 
@@ -212,28 +219,21 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         findNavController().navigate(HomeFragmentDirections.actionGlobalSplashFragment())
     }
 
-    override fun onClicked(category: String) {
-        if (category.equals("Custom")) {
+    override fun onClicked(category: Int) {
+        if (category == 7) {
             var getEventsRequest = GetEventsRequest(location.latitude, location.longitude)
             viewModel.getEvents(getEventsRequest)
         } else {
-            viewModel.categories?.let {
-                it.forEach {
-                    if (it.name.equals(category)) {
-                        var getEventsByCategoriesRequest =
-                            GetEventsByCategoriesRequest(
-                                it.categoryId!!,
-                                location.latitude,
-                                location.longitude
-                            )
-                        viewModel.getEventsByCategories(getEventsByCategoriesRequest)
-                    }
-                }
-            }
-
+            var getEventsByCategoriesRequest =
+                GetEventsByCategoriesRequest(
+                    category,
+                    location.latitude,
+                    location.longitude
+                )
+            viewModel.getEventsByCategories(getEventsByCategoriesRequest)
         }
-
     }
+
 
     fun avoidDoubleClicks(view: View) {
         val DELAY_IN_MS: Long = 900
@@ -291,6 +291,11 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
 
             }
         }
+    }
+
+    override fun onFocusChange(p0: View?, p1: Boolean) {
+        val listener: MapFragment.BottomNavListener = activity as MapFragment.BottomNavListener
+        listener.bottomNavListenerEvent(p1)
     }
 
 

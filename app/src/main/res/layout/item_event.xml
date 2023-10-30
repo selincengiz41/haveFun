@@ -13,7 +13,7 @@
         android:layout_height="@dimen/_100sdp"
         android:layout_margin="@dimen/_10sdp"
         app:backgroundColor="@color/white"
-        android:elevation="@dimen/_3sdp"
+        android:elevation="@dimen/_1sdp"
         app:cornerAll="@dimen/_13sdp">
 
     <com.tistory.zladnrms.roundablelayout.RoundableLayout

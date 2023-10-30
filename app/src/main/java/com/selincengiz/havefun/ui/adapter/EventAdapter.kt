@@ -12,8 +12,7 @@ import com.selincengiz.havefun.data.model.ApiEvents
 import com.selincengiz.havefun.databinding.ItemEventBinding
 
 class EventAdapter(
-    private val itemListener: ItemEventListener, private val categories:
-    List<ApiCategory>
+    private val itemListener: ItemEventListener
 ) :
     ListAdapter<ApiEvents, EventAdapter.EventViewHolder>(CategoryDiffCallBack()) {
 
@@ -23,7 +22,7 @@ class EventAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), itemListener, categories
+            ), itemListener
         )
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) =
@@ -32,19 +31,13 @@ class EventAdapter(
 
     class EventViewHolder(
         private val binding: ItemEventBinding,
-        private val listener: ItemEventListener,
-        private val categories:
-        List<ApiCategory>
+        private val listener: ItemEventListener
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(event: ApiEvents) = with(binding) {
 
-            categories.forEach {
-                if (it.categoryId!!.equals(event.categoryId)) {
-                    ivCategory.loadUrl(it.urlHome)
-                }
-            }
+            ivCategory.loadUrl(event.urlHome)
 
             tvTitle.text = event.title
             tvDate.text = event.date

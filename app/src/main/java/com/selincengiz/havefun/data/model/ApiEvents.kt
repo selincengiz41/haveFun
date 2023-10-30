@@ -22,12 +22,20 @@ data class ApiEvents(
     val locationLong: Double,
     @SerializedName("locationTitle")
     val locationTitle: String,
+    @SerializedName("name")
+    val name: String,
     @SerializedName("personLimit")
     val personLimit: Int,
     @SerializedName("phone")
     val phone: String,
     @SerializedName("price")
-    val price: Double?,
+    val price: Double,
     @SerializedName("title")
-    val title: String
+    val title: String,
+    @SerializedName("url")
+    val url: String,
+    @SerializedName("urlDetail")
+    val urlDetail: String,
+    @SerializedName("urlHome")
+    val urlHome: String
 )

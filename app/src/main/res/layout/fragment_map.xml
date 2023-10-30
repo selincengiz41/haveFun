@@ -24,18 +24,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <com.tistory.zladnrms.roundablelayout.RoundableLayout
+            android:id="@+id/layy"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            app:cornerAll="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_45sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="@+id/categories_recycler"
+            app:layout_constraintStart_toStartOf="@+id/categories_recycler">
+
+        </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:iconifiedByDefault="false"
+            android:padding="@dimen/_5sdp"
+            android:queryBackground="@null"
+            android:queryHint=" Find Your Event"
+            android:searchHintIcon="@drawable/searchh"
+            android:searchIcon="@drawable/searchh"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@+id/layy"
+            app:layout_constraintEnd_toEndOf="@+id/layy"
+            app:layout_constraintStart_toStartOf="@+id/layy"
+            app:layout_constraintTop_toTopOf="@+id/layy" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/categories_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/_40sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layy"
             tools:itemCount="4"
+            android:layout_marginTop="@dimen/_5sdp"
             tools:listitem="@layout/item_category" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

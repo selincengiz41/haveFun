@@ -9,4 +9,6 @@
     <color name="search">#ECECEC</color>
     <color name="pinky">#FFC5AB</color>
     <color name="category">#FEF4E5</color>
+    <color name="liveBlue">#3D56F0</color>
+    <color name="grey">#3F4047</color>
 </resources>

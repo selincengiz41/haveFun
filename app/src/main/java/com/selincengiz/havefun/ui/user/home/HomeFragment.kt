@@ -79,7 +79,7 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         flpc = LocationServices.getFusedLocationProviderClient(requireActivity())
         binding.homeFunctions = this
-        binding.profileLayout.background = null
+
         binding.categoriesRecycler.adapter = categoryAdapter
         binding.popularRecycler.adapter = eventAdapter
         return binding.root
@@ -91,7 +91,8 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         binding.searchView.setOnQueryTextListener(this)
         binding.searchView.setOnQueryTextFocusChangeListener(this)
         with(binding) {
-            profile.loadUrl(auth.currentUser?.photoUrl)
+
+            profile2.loadUrl(auth.currentUser?.photoUrl)
             name = auth.currentUser?.displayName
 
         }
@@ -109,10 +110,10 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         // Set color for the container's content as transparent
         binding.drawerLayout.setScrimColor(Color.TRANSPARENT)
 
-        binding.navScroll.setOnClickListener(this)
-        binding.navSlide.setOnClickListener(this)
-        binding.navDoorIn.setOnClickListener(this)
-        binding.navDoorOut.setOnClickListener(this)
+        binding.logout2.setOnClickListener(this)
+        binding.myProfile.setOnClickListener(this)
+        binding.attendedEvents.setOnClickListener(this)
+
 
 
         // Implement the drawer listener
@@ -129,6 +130,7 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
         })
 
     }
+
 
     fun getLocation() {
         locationTask.addOnSuccessListener {
@@ -271,25 +273,21 @@ class HomeFragment : Fragment(), ItemCategoryListener, ItemEventListener,
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.nav_scroll -> {
-                avoidDoubleClicks(binding.navScroll)
+            R.id.my_profile -> {
+                avoidDoubleClicks(binding.myProfile)
+findNavController().navigate(HomeFragmentDirections.actionGlobalProfileFragment())
+            }
+
+            R.id.attended_events -> {
+                avoidDoubleClicks(binding.attendedEvents)
+                findNavController().navigate(HomeFragmentDirections.actionGlobalAttendedFragment())
+            }
+
+            R.id.logout2 -> {
+                avoidDoubleClicks(binding.logout2)
 
             }
 
-            R.id.nav_slide -> {
-                avoidDoubleClicks(binding.navSlide)
-
-            }
-
-            R.id.nav_doorIn -> {
-                avoidDoubleClicks(binding.navDoorIn)
-
-            }
-
-            R.id.nav_doorOut -> {
-                avoidDoubleClicks(binding.navDoorIn)
-
-            }
         }
     }
 

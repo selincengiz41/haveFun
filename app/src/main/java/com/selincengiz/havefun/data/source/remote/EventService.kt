@@ -4,6 +4,7 @@ package com.selincengiz.havefun.data.source.remote
 import com.selincengiz.havefun.data.model.AddEventRequest
 import com.selincengiz.havefun.data.model.BaseResponse
 import com.selincengiz.havefun.data.model.EventCapacityResponse
+import com.selincengiz.havefun.data.model.GetAttendedEventRequest
 import com.selincengiz.havefun.data.model.GetCategoryResponse
 import com.selincengiz.havefun.data.model.GetEventResponse
 import com.selincengiz.havefun.data.model.GetEventByIdRequest
@@ -45,5 +46,7 @@ interface EventService {
     @POST("unparticipate_event.php")
     suspend fun unparticipateEvent(@Body getEventCapacityRequest: GetEventCapacityRequest): BaseResponse
 
+    @POST("get_attended_events.php")
+    suspend fun getAttendedEvents(@Body getAttendedEventRequest: GetAttendedEventRequest): GetEventResponse
 
 }

@@ -6,6 +6,7 @@ import com.selincengiz.havefun.data.model.ApiCategory
 import com.selincengiz.havefun.data.model.ApiEvents
 import com.selincengiz.havefun.data.model.Attend
 import com.selincengiz.havefun.data.model.Capacity
+import com.selincengiz.havefun.data.model.GetAttendedEventRequest
 import com.selincengiz.havefun.data.model.GetEventByIdRequest
 import com.selincengiz.havefun.data.model.GetEventCapacityRequest
 import com.selincengiz.havefun.data.model.GetEventsByCategoriesRequest
@@ -99,7 +100,7 @@ class ApiEventRepo(
         return try {
 
             Resource.Success(
-                    eventService.participateEvent(getEventCapacityRequest).msg!!
+                eventService.participateEvent(getEventCapacityRequest).msg!!
 
             )
         } catch (e: Exception) {
@@ -114,6 +115,20 @@ class ApiEventRepo(
         return try {
             Resource.Success(
                 eventService.unparticipateEvent(getEventCapacityRequest).msg!!
+
+            )
+        } catch (e: Exception) {
+
+            Resource.Error(e)
+        }
+
+
+    }
+
+    suspend fun getAttendedEvents(getAttendedEventRequest: GetAttendedEventRequest): Resource<List<ApiEvents>> {
+        return try {
+            Resource.Success(
+                eventService.getAttendedEvents(getAttendedEventRequest).data
 
             )
         } catch (e: Exception) {

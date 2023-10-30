@@ -66,6 +66,18 @@ class MainActivity : AppCompatActivity(),MapFragment.BottomNavListener {
 
 
                     }
+                    R.id.profileFragment -> {
+
+                        visibilityBottomNav = true
+
+
+                    }
+                    R.id.attendedFragment -> {
+
+                        visibilityBottomNav = true
+
+
+                    }
 
                     else -> {
                         visibilityBottomNav = false

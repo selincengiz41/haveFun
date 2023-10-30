@@ -34,7 +34,7 @@
             <com.tistory.zladnrms.roundablelayout.RoundableLayout
                 android:id="@+id/background"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_140sdp"
+                android:layout_height="@dimen/_100sdp"
                 android:backgroundTint="@color/blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,57 +44,6 @@
 
                 >
 
-                <com.tistory.zladnrms.roundablelayout.RoundableLayout
-                    android:id="@+id/profileLayout"
-                    app:backgroundColor="@android:color/transparent"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp">
-
-                    <ImageView
-                        android:id="@+id/profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/user"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                    </ImageView>
-                </com.tistory.zladnrms.roundablelayout.RoundableLayout>
-
-
-                <TextView
-                    android:id="@+id/nameText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:text="@{name}"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14ssp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/profileLayout"
-                    app:layout_constraintStart_toEndOf="@+id/profileLayout"
-                    app:layout_constraintTop_toTopOf="@+id/profileLayout"></TextView>
-
-                <ImageView
-                    android:id="@+id/logout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:onClick="@{() -> homeFunctions.logOut()}"
-                    android:src="@drawable/logout"
-                    app:layout_constraintBottom_toBottomOf="@+id/profileLayout"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/profileLayout">
-
-                </ImageView>
-
 
                 <SearchView
                     android:id="@+id/searchView"
@@ -103,17 +52,16 @@
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:iconifiedByDefault="false"
                     android:padding="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:queryBackground="@null"
                     android:queryHint=" Find Your Event"
-
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:searchHintIcon="@drawable/baseline_search_24"
                     android:searchIcon="@drawable/baseline_search_24"
                     android:textSize="@dimen/_16ssp"
                     android:textStyle="italic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profileLayout" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </com.tistory.zladnrms.roundablelayout.RoundableLayout>
 
@@ -195,93 +143,106 @@
             android:background="@color/blue"
             android:fitsSystemWindows="false">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.tistory.zladnrms.roundablelayout.RoundableLayout
+                    android:id="@+id/profileLayout2"
+                    app:backgroundColor="@android:color/transparent"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_90sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_80sdp">
+
+                    <ImageView
+                        android:id="@+id/profile2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/user"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </ImageView>
+                </com.tistory.zladnrms.roundablelayout.RoundableLayout>
+
+
+                <TextView
+                    android:id="@+id/nameText2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:gravity="center"
+                    android:text="@{name}"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_18ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/profileLayout2"></TextView>
+
+
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintTop_toBottomOf="@+id/nameText2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/nav_scroll"
+                    android:id="@+id/my_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@android:drawable/ic_menu_set_as"
+                    android:drawableStart="@drawable/baseline_person_outline_24"
                     android:drawablePadding="10dp"
                     android:drawableTint="@android:color/white"
                     android:gravity="center_vertical"
                     android:padding="20dp"
-                    android:text="Scroll"
+                    android:text="My Profile"
                     android:textColor="@android:color/white"
                     android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="40dp"
-                    android:background="@drawable/baseline_arrow_forward_24" />
 
                 <TextView
-                    android:id="@+id/nav_slide"
+                    android:id="@+id/attended_events"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@android:drawable/ic_menu_set_as"
+                    android:drawableStart="@drawable/baseline_widgets_24"
                     android:drawablePadding="10dp"
                     android:drawableTint="@android:color/white"
                     android:gravity="center_vertical"
                     android:padding="20dp"
-                    android:text="Slide"
+                    android:text="Attended Events"
                     android:textColor="@android:color/white"
                     android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="40dp"
-                    android:background="@drawable/baseline_arrow_forward_24" />
 
                 <TextView
-                    android:id="@+id/nav_doorIn"
+                    android:id="@+id/logout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@android:drawable/ic_menu_set_as"
+                    android:drawableStart="@drawable/logout"
                     android:drawablePadding="10dp"
                     android:drawableTint="@android:color/white"
                     android:gravity="center_vertical"
                     android:padding="20dp"
-                    android:text="Door ın"
+                    android:onClick="@{() -> homeFunctions.logOut()}"
+                    android:text="Log Out"
                     android:textColor="@android:color/white"
                     android:textStyle="bold" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="40dp"
-                    android:background="@drawable/baseline_arrow_forward_24" />
-
-                <TextView
-                    android:id="@+id/nav_doorOut"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@android:drawable/ic_menu_set_as"
-                    android:drawablePadding="10dp"
-                    android:drawableTint="@android:color/white"
-                    android:gravity="center_vertical"
-                    android:padding="20dp"
-                    android:text="Door out"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="40dp"
-                    android:background="@drawable/baseline_arrow_forward_24" />
 
             </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.navigation.NavigationView>
 

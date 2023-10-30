@@ -92,6 +92,18 @@
         app:exitAnim="@android:anim/fade_out"
         app:popUpTo="@id/nav_graph"
         app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_profileFragment"
+        app:destination="@id/profileFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+      />
+    <action
+        android:id="@+id/action_global_attendedFragment"
+        app:destination="@id/attendedFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+       />
     <fragment
         android:id="@+id/createEventFragment"
         android:name="com.selincengiz.havefun.ui.event.CreateEventFragment"
@@ -103,5 +115,17 @@
         <argument
             android:name="id"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.selincengiz.havefun.ui.user.profile.ProfileFragment"
+        android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/attendedFragment"
+        android:name="com.selincengiz.havefun.ui.user.attended.AttendedFragment"
+        android:label="AttendedFragment" >
+        <action
+            android:id="@+id/attendedToDetail"
+            app:destination="@id/detailFragment" />
     </fragment>
 </navigation>

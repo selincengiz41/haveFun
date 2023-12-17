@@ -6,14 +6,15 @@ This application is developed to enable individuals to track and participate in 
 <!-- Screenshots -->
 ## 📸 Screenshots
 <p align="center">
-  <img src="https://github.com/selincengiz41/haveFun/assets/60012262/3fc3f13b-67d5-4b5b-89ac-63ffc90f6746" width="130" height="300"/> 
-  <img src="https://github.com/selincengiz41/haveFun/assets/60012262/7bd04936-b724-4e50-8ca4-c4557d3c714a" width="130" height="300"/> 
-  <img src="https://github.com/selincengiz41/haveFun/assets/60012262/ebbdd713-af5c-430d-9d9f-3bcbeb92c0e8" width="130" height="300"/>
   <img src="https://github.com/selincengiz41/haveFun/assets/60012262/1e5d3ef1-6cc3-4f0a-a4d0-c745523b2dcb" width="130" height="300"/>
-  <img src="https://github.com/selincengiz41/haveFun/assets/60012262/fd5bd76b-e831-468a-a054-04b009ea93b4" width="130" height="300"/>
   <img src="https://github.com/selincengiz41/haveFun/assets/60012262/2b3cd975-05fe-4552-978f-a782efa948da" width="130" height="300"/>
   <img src="https://github.com/selincengiz41/haveFun/assets/60012262/9bb3d172-ea76-4e5b-9f0e-4281ef3a3010" width="130" height="300"/>
-  <img src="https://github.com/selincengiz41/haveFun/assets/60012262/aca593df-ef32-4ef8-aa77-11c67b43e8ef" width="300" height="130"/>
+  <img src="https://github.com/selincengiz41/haveFun/assets/60012262/aca593df-ef32-4ef8-aa77-11c67b43e8ef" width="130" height="300"/>
+  <img src="https://github.com/selincengiz41/haveFun/assets/60012262/7bd04936-b724-4e50-8ca4-c4557d3c714a" width="130" height="300"/> 
+  <img src="https://github.com/selincengiz41/haveFun/assets/60012262/ebbdd713-af5c-430d-9d9f-3bcbeb92c0e8" width="130" height="300"/>
+  <img src="https://github.com/selincengiz41/haveFun/assets/60012262/fd5bd76b-e831-468a-a054-04b009ea93b4" width="130" height="300"/>
+  <img src="https://github.com/selincengiz41/haveFun/assets/60012262/3fc3f13b-67d5-4b5b-89ac-63ffc90f6746" width="130" height="300"/> 
+  
  
 
 
